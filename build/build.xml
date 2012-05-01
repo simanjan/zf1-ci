@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="zf1-ci" default="build">
 
-	<target name="build" depends="prepare,testing" />
+	<target name="build" depends="prepare,zf,testing" />
 
 	<target name="clean" description="Cleanup build artifacts">
 		<delete dir="../build/coverage"/>
 		<delete dir="../build/logs"/>
 	</target>
 
-	<target name="zf" description="Creating symlink for Zend Framework">
-		<mkdir dir="../library"/>
-		<exec executable="ln -s /lib/ZendFramework-1.11.11/library/Zend ../library/Zend" escape="false" passthru="true" />
-	</target>
-
-	<target name="prepare" depends="clean,zf" description="Prepare for build">
+	<target name="prepare" depends="clean" description="Prepare for build">
 		<mkdir dir="../build/coverage"/>
 		<mkdir dir="../build/logs"/>
+		<mkdir dir="../library"/>
+	</target>
+
+	<target name="zf" description="Creating symlink for Zend Framework">
+		<exec executable="cp /lib/ZendFramework-1.11.11/library/Zend ../library/Zend" escape="false" passthru="true" />
 	</target>
 
 	<target name="testing" description="Run unit tests with PHPUnit">
