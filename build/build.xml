@@ -9,6 +9,7 @@
 	</target>
 
 	<target name="zf" description="Creating symlink for Zend Framework">
+		<mkdir dir="../library"/>
 		<exec executable="ln -s /lib/ZendFramework-1.11.11/library/Zend ." dir="../library" escape="false" passthru="true" />
 	</target>
 
