@@ -42,7 +42,7 @@
 				</fileset>
 			</batchtest>
 		</phpunit>
-		<phpunitreport infile="../build/coverage/testsuites.xml" format="frames" todir="build/tests"/>
+		<phpunitreport infile="../build/coverage/testsuites.xml" format="frames" todir="../build/tests"/>
 		<coverage-report outfile="../build/coverage/coverage.xml">
 			<report toDir="../build/coverage" title="Demo"/>
 		</coverage-report>
