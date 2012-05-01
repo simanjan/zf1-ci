@@ -16,7 +16,8 @@
 	</target>
 
 	<target name="zf" description="Creating symlink for Zend Framework">
-		<exec executable="cp /lib/ZendFramework-1.11.11/library/Zend ../library/Zend" escape="false" passthru="true" />
+		<exec passthru="true" executable="pwd"/>
+		<exec executable="cp /lib/ZendFramework-1.11.11/library/Zend library/Zend" escape="false" passthru="true" />
 	</target>
 
 	<target name="testing" description="Run unit tests with PHPUnit">
