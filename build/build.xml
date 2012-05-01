@@ -12,7 +12,7 @@
 		<exec executable="ln -s /lib/ZendFramework-1.11.11/library/Zend ../library" />
 	</target>
 
-	<target name="prepare" depends="clean" description="Prepare for build">
+	<target name="prepare" depends="clean,zf" description="Prepare for build">
 		<mkdir dir="../build/coverage"/>
 		<mkdir dir="../build/logs"/>
 	</target>
