@@ -7,12 +7,14 @@
 		<delete dir="../library/Zend"/>
 		<delete dir="../build/coverage"/>
 		<delete dir="../build/logs"/>
+		<delete dir="../build/tests"/>
 	</target>
 
 	<target name="prepare" depends="clean" description="Prepare for build">
 		<mkdir dir="../library/Zend"/>
 		<mkdir dir="../build/coverage"/>
 		<mkdir dir="../build/logs"/>
+		<mkdir dir="../build/tests"/>
 	</target>
 
 	<target name="zf" description="Creating symlink for Zend Framework">
@@ -40,7 +42,7 @@
 				</fileset>
 			</batchtest>
 		</phpunit>
-		<phpunitreport infile="../build/coverage/testsuites.xml" format="frames" todir="reports/tests"/>
+		<phpunitreport infile="../build/coverage/testsuites.xml" format="frames" todir="build/tests"/>
 		<coverage-report outfile="../build/coverage/coverage.xml">
 			<report toDir="../build/coverage" title="Demo"/>
 		</coverage-report>
