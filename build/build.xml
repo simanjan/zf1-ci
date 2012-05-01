@@ -10,7 +10,7 @@
 
 	<target name="zf" description="Creating symlink for Zend Framework">
 		<mkdir dir="../library"/>
-		<exec executable="ln -s /lib/ZendFramework-1.11.11/library/Zend ." dir="../library" escape="false" passthru="true" />
+		<exec executable="ln -s /lib/ZendFramework-1.11.11/library/Zend ../library/Zend" passthru="true" />
 	</target>
 
 	<target name="prepare" depends="clean,zf" description="Prepare for build">
@@ -25,7 +25,7 @@
 				<exclude name="**/*Test.php"/>
 			</fileset>
 		</coverage-setup>
-		<phpunit bootstrap="tests/bootstrap.php" codecoverage="true">
+		<phpunit codecoverage="true">
 			<formatter type="xml" todir="../build/coverage"/>
 			<batchtest>
 				<fileset dir="../tests">
