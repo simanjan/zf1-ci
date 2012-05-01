@@ -32,7 +32,7 @@
 				<exclude name="**/*Test.php"/>
 			</fileset>
 		</coverage-setup>
-		<phpunit codecoverage="true">
+		<phpunit bootstrap="../tests/bootstrap.php" codecoverage="true">
 			<formatter type="xml" todir="../build/coverage"/>
 			<batchtest>
 				<fileset dir="../tests">
