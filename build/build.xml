@@ -9,9 +9,9 @@
 	</target>
 
 	<target name="prepare" depends="clean" description="Prepare for build">
+		<mkdir dir="../library"/>
 		<mkdir dir="../build/coverage"/>
 		<mkdir dir="../build/logs"/>
-		<mkdir dir="../library"/>
 	</target>
 
 	<target name="zf" description="Creating symlink for Zend Framework">
