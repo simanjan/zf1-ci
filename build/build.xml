@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="zf1-ci" default="build">
 
-	<target name="build" depends="prepare,phpunit" />
+	<target name="build" depends="prepare,testing" />
 
 	<target name="clean" description="Cleanup build artifacts">
 		<delete dir="${basedir}/build/coverage"/>
@@ -13,7 +13,7 @@
 		<mkdir dir="${basedir}/build/logs"/>
 	</target>
 
-	<target name="phpunit" description="Run unit tests with PHPUnit">
+	<target name="testing" description="Run unit tests with PHPUnit">
 		<coverage-setup database="reports/coverage.db">
 			<fileset dir="application">
 				<include name="**/*.php"/>
