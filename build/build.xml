@@ -23,7 +23,7 @@
 		<phpunit codecoverage="true">
 			<formatter type="xml" todir="${basedir}/build/coverage"/>
 			<batchtest>
-				<fileset dir="src">
+				<fileset dir="tests">
 					<include name="**/*Test.php"/>
 				</fileset>
 			</batchtest>
