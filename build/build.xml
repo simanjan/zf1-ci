@@ -14,7 +14,7 @@
 	</target>
 
 	<target name="phpunit" description="Run unit tests with PHPUnit">
-		<exec executable="phpunit" failonerror="true"/>
+		<exec executable="phpunit" checkreturn="true"/>
 	</target>
 
 </project>
