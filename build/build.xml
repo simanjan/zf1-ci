@@ -9,7 +9,7 @@
 	</target>
 
 	<target name="zf" description="Creating symlink for Zend Framework">
-		<exec executable="ln -s /lib/ZendFramework-1.11.11/library/Zend ../library" />
+		<exec executable="ln -s /lib/ZendFramework-1.11.11/library/Zend ../library/Zend" />
 	</target>
 
 	<target name="prepare" depends="clean,zf" description="Prepare for build">
