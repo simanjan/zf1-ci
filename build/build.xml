@@ -4,13 +4,13 @@
 	<target name="build" depends="prepare,zf,testing" />
 
 	<target name="clean" description="Cleanup build artifacts">
-		<delete dir="../library"/>
+		<delete dir="../library/Zend"/>
 		<delete dir="../build/coverage"/>
 		<delete dir="../build/logs"/>
 	</target>
 
 	<target name="prepare" depends="clean" description="Prepare for build">
-		<mkdir dir="../library"/>
+		<mkdir dir="../library/Zend"/>
 		<mkdir dir="../build/coverage"/>
 		<mkdir dir="../build/logs"/>
 	</target>
