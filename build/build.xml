@@ -28,9 +28,9 @@
 				</fileset>
 			</batchtest>
 		</phpunit>
-		<phpunitreport infile="reports/testsuites.xml" format="frames" todir="reports/tests"/>
-		<coverage-report outfile="reports/coverage.xml">
-			<report toDir="reports/coverage" title="Demo"/>
+		<phpunitreport infile="../build/coverage/testsuites.xml" format="frames" todir="reports/tests"/>
+		<coverage-report outfile="../build/coverage/coverage.xml">
+			<report toDir="../build/coverage" title="Demo"/>
 		</coverage-report>
 	</target>
 
