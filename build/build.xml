@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="zf1-ci" default="build">
+	<target name="build" />
+</project>
