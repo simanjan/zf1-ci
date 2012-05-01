@@ -8,6 +8,10 @@
 		<delete dir="../build/logs"/>
 	</target>
 
+	<target name="zf" description="Creating symlink for Zend Framework">
+		<exec executable="ln -s /lib/ZendFramework-1.11.11/library/Zend ../library" />
+	</target>
+
 	<target name="prepare" depends="clean" description="Prepare for build">
 		<mkdir dir="../build/coverage"/>
 		<mkdir dir="../build/logs"/>
