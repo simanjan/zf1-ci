@@ -10,8 +10,7 @@
 	</target>
 
 	<target name="prepare" depends="clean" description="Prepare for build">
-		<mkdir dir="../library"/>
-		<chmod file="../library" mode="777"/>
+		<mkdir dir="../library/Zend"/>
 		<mkdir dir="../build/coverage"/>
 		<mkdir dir="../build/logs"/>
 	</target>
@@ -19,7 +18,7 @@
 	<target name="zf" description="Creating symlink for Zend Framework">
 		<exec passthru="true" executable="pwd"/>
 		<!--<exec executable="cp -r /lib/ZendFramework-1.11.11/library/Zend /var/lib/jenkins/jobs/zf1-ci/workspace/library" escape="false" passthru="true" />-->
-		<copy todir="../library">
+		<copy todir="../library/Zend">
 			<fileset defaultexcludes="false" dir="/lib/ZendFramework-1.11.11/library/Zend">
 				<include name="**/*.php" />
 			</fileset>
