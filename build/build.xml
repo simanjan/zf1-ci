@@ -15,7 +15,7 @@
 
 	<target name="testing" description="Run unit tests with PHPUnit">
 		<coverage-setup database="reports/coverage.db">
-			<fileset dir="application">
+			<fileset dir="../application">
 				<include name="**/*.php"/>
 				<exclude name="**/*Test.php"/>
 			</fileset>
