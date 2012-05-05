@@ -138,12 +138,4 @@
 		</phpdoc2>
 	</target>
 
-	<!-- The phpcb build target for PHP_CodeBrowser -->
-	<target name="cb" description="Aggregate tool output with PHP_CodeBrowser">
-		<mkdir dir="build/code-browser"/>
-		<exec command="phpcb  --log build/reports
-                          --source .
-                          --output build/code-browser"
-		      logoutput="true" />
-	</target>
 </project>
