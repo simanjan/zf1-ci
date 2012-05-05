@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="zf1-ci" default="build" basedir=".">
 
-	<target name="build" depends="prepare,lint,zf,testing,loc" />
+	<target name="build" depends="prepare,lint,zf,testing,loc,depend" />
 
 	<target name="clean" description="Cleanup build artifacts">
 		<delete dir="library/Zend"/>
@@ -79,6 +79,20 @@
 				<exclude name="library/Phing"/>
 			</fileset>
 		</phploc>
+	</target>
+
+	<!-- This task runs PHP_Depend, a software analyzer and metric tool for PHP Code -->
+	<target name="depend">
+		<phpdepend>
+			<fileset dir=".">
+				<include name="**/*.php"/>
+				<exclude name="library/Zend"/>
+				<exclude name="library/Phing"/>
+			</fileset>
+			<logger type="jdepend-xml" outfile="build/reports/jdepend.xml"/>
+			<logger type="jdepend-chart" outfile="build/reports/dependencies.svg"/>
+			<logger type="overview-pyramid" outfile="build/reports/overview-pyramid.svg"/>
+		</phpdepend>
 	</target>
 
 </project>
