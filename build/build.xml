@@ -18,7 +18,7 @@
 	</target>
 
 	<target name="lint">
-		<phplint level="verbose" deprecatedaserror="true" cachefile="test-lint-cachefile">
+		<phplint level="verbose" deprecatedaserror="true" cachefile="test-lint-cachefile" haltonfailure="true">
 			<fileset dir="../">
 				<include name="**/*.php"/>
 				<exclude name="library/Zend"/>
