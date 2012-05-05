@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="zf1-ci" default="build" basedir=".">
 
-	<target name="build" depends="prepare,lint,zf,testing,loc,depend,cpd,code-sniffer,md,api,cb" />
+	<target name="build" depends="prepare,lint,zf,testing,loc,depend,cpd,code-sniffer,md,api,code-browser" />
 
 	<target name="clean" description="Cleanup build artifacts">
 		<delete dir="library/Zend"/>
@@ -143,7 +143,7 @@
 	</target>
 
 	<!-- The phpcb build target for PHP_CodeBrowser -->
-	<target name="cb" description="Aggregate tool output with PHP_CodeBrowser">
+	<target name="code-browser" description="Aggregate tool output with PHP_CodeBrowser">
 		<mkdir dir="build/code-browser"/>
 		<touch file="build/code-browser/index.html" />
 		<exec command="phpcb  --log build/reports --source application --output build/code-browser" logoutput="true" />
