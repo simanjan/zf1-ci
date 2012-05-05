@@ -15,7 +15,6 @@
 
 	<target name="prepare" depends="clean" description="Prepare for build">
 		<mkdir dir="library/Zend"/>
-		<mkdir dir="build/api"/>
 		<mkdir dir="build/code-browser"/>
 		<mkdir dir="build/coverage"/>
 		<mkdir dir="build/logs"/>
@@ -134,8 +133,8 @@
 
 	<!-- This task runs phpDocumentor 2 , PHP 5.3-compatible API documentation tool -->
 	<target name="api">
-		<mkdir dir="../htmlreports/API" mode="0777"/>
-		<mkdir dir="build/api" mode="0777"/>
+		<!--<mkdir dir="../htmlreports/API" mode="0777"/>-->
+		<!--<mkdir dir="build/api" mode="0777"/>-->
 		<phpdoc2 title="API Documentation" destdir="build/api" template="responsive">
 			<fileset dir=".">
 				<include name="application/**/*.php"/>
