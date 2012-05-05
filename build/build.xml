@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="zf1-ci" default="build" basedir=".">
 
-	<target name="build" depends="prepare,lint,zf,testing,loc,depend" />
+	<target name="build" depends="prepare,lint,zf,testing,loc,depend,cpd" />
 
 	<target name="clean" description="Cleanup build artifacts">
 		<delete dir="library/Zend"/>
@@ -90,6 +90,17 @@
 			<logger type="jdepend-chart" outfile="build/reports/dependencies.svg"/>
 			<logger type="overview-pyramid" outfile="build/reports/overview-pyramid.svg"/>
 		</phpdepend>
+	</target>
+
+	<!-- This task runs phpcpd, a Copy/Paste Detector (CPD) for PHP Code -->
+	<target name="cpd">
+		<phpcpd minLines="3" minTokens="40">
+			<fileset dir=".">
+				<include name="application/**/*.php"/>
+				<include name="public/**/*.php"/>
+			</fileset>
+			<formatter type="pmd" outfile="build/reports/pmd-cpd.xml"/>
+		</phpcpd>
 	</target>
 
 </project>
