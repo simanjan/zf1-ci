@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="zf1-ci" default="build">
 
-	<target name="build" depends="prepare,zf,testing" />
+	<target name="build" depends="prepare,lint,zf,testing" />
 
 	<target name="clean" description="Cleanup build artifacts">
 		<delete dir="../library/Zend"/>
@@ -15,6 +15,15 @@
 		<mkdir dir="../build/coverage"/>
 		<mkdir dir="../build/logs"/>
 		<mkdir dir="../build/tests"/>
+	</target>
+
+	<target name="lint">
+		<phplint level="verbose" deprecatedaserror="true" cachefile="test-lint-cachefile">
+			<fileset dir="../">
+				<include name="**/*.php"/>
+				<exclude name="library/Zend"/>
+			</fileset>
+		</phplint>
 	</target>
 
 	<target name="zf" description="Creating symlink for Zend Framework">
