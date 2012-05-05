@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="zf1-ci" default="build">
+<project name="zf1-ci" default="build" basedir=".">
 
 	<target name="build" depends="prepare,lint,zf,testing,loc" />
 
 	<target name="clean" description="Cleanup build artifacts">
-		<delete dir="../library/Zend"/>
-		<delete dir="../build/coverage"/>
-		<delete dir="../build/logs"/>
-		<delete dir="../build/tests"/>
+		<delete dir="library/Zend"/>
+		<delete dir="build/coverage"/>
+		<delete dir="build/logs"/>
+		<delete dir="build/tests"/>
 	</target>
 
 	<target name="prepare" depends="clean" description="Prepare for build">
-		<mkdir dir="../library/Zend"/>
-		<mkdir dir="../build/coverage"/>
-		<mkdir dir="../build/logs"/>
-		<mkdir dir="../build/tests"/>
+		<mkdir dir="library/Zend"/>
+		<mkdir dir="build/coverage"/>
+		<mkdir dir="build/logs"/>
+		<mkdir dir="build/tests"/>
 	</target>
 
 	<target name="lint">
 		<phplint level="verbose" deprecatedaserror="true" cachefile="test-lint-cachefile" haltonfailure="true">
-			<fileset dir="../">
+			<fileset dir=".">
 				<include name="**/*.php"/>
 				<exclude name="library/Zend"/>
 				<exclude name="library/Phing"/>
@@ -30,7 +30,7 @@
 	<target name="zf" description="Creating symlink for Zend Framework">
 		<exec passthru="true" executable="pwd"/>
 		<!--<exec executable="cp -r /lib/ZendFramework-1.11.11/library/Zend /var/lib/jenkins/jobs/zf1-ci/workspace/library" escape="false" passthru="true" />-->
-		<copy todir="../library/Zend">
+		<copy todir="library/Zend">
 			<fileset defaultexcludes="false" dir="/lib/ZendFramework-1.11.11/library/Zend">
 				<include name="**/*.php" />
 			</fileset>
@@ -39,38 +39,38 @@
 
 	<target name="testing" description="Run unit tests with PHPUnit">
 		<!-- The CoverageSetupTask prepares a database which can be used to gather code coverage information for unit tests. -->
-		<coverage-setup database="../build/coverage/coverage.db">
-			<fileset dir="../application">
+		<coverage-setup database="build/coverage/coverage.db">
+			<fileset dir="application">
 				<include name="**/*.php"/>
 				<exclude name="**/*Test.php"/>
 			</fileset>
 		</coverage-setup>
 
 		<!-- This task runs testcases using the PHPUnit framework. It is a functional port of the Ant JUnit task. -->
-		<phpunit bootstrap="../tests/bootstrap.php" codecoverage="true" printsummary="true">
-			<formatter type="xml" todir="../build/logs" outfile="junit.xml"/>
-			<formatter type="clover" todir="../build/logs" outfile="clover.xml"/>
+		<phpunit bootstrap="tests/bootstrap.php" codecoverage="true" printsummary="true">
+			<formatter type="xml" todir="build/logs" outfile="junit.xml"/>
+			<formatter type="clover" todir="build/logs" outfile="clover.xml"/>
 			<batchtest>
-				<fileset dir="../tests">
+				<fileset dir="tests">
 					<include name="**/*Test.php"/>
 				</fileset>
 			</batchtest>
 		</phpunit>
 
 		<!-- The CoverageReportTask formats a coverage database into a framed HTML report using XSLT. The report can optionally make use of the Generic Syntax Highlighting library, GeSHi (See GeSHi Homepage) library to mark up source code. The path to the library (if not in the default path) can be specified as an attribute. -->
-		<coverage-report outfile="../build/coverage/coverage.db">
-			<report toDir="../build/coverage" title="zf1-ci coverage report"/>
+		<coverage-report outfile="build/coverage/coverage.db">
+			<report toDir="build/coverage" title="zf1-ci coverage report"/>
 		</coverage-report>
 	</target>
 
-	<taskdef name="phploc" classname="${project.basedir}/../library/Phing/PhpLocTask" />
+	<taskdef name="phploc" classname="${project.basedir}/library/Phing/PhpLocTask" />
 
 	<target name="loc">
 		<tstamp>
 			<format property="check.date.time" pattern="%Y%m%d-%H%M%S" locale="en_US"/>
 		</tstamp>
 		<phploc reportType="csv" reportName="${check.date.time}-report" reportDirectory="phploc-reports" countTests="true">
-			<fileset dir="../">
+			<fileset dir=".">
 				<include name="**/*.php"/>
 				<exclude name="library/Zend"/>
 				<exclude name="library/Phing"/>
