@@ -134,12 +134,12 @@
 	<target name="api">
 		<mkdir dir="build/api"/>
 		<touch file="build/api/index.html" />
-		<phpdoc2 title="API Documentation" destdir="build/api" template="responsive">
-			<fileset dir=".">
-				<include name="application/**/*.php"/>
-				<include name="public/**/*.php"/>
-			</fileset>
-		</phpdoc2>
+		<!--<phpdoc2 title="API Documentation" destdir="build/api" template="responsive">-->
+			<!--<fileset dir=".">-->
+				<!--<include name="application/**/*.php"/>-->
+				<!--<include name="public/**/*.php"/>-->
+			<!--</fileset>-->
+		<!--</phpdoc2>-->
 	</target>
 
 	<!-- The phpcb build target for PHP_CodeBrowser -->
