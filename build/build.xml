@@ -28,24 +28,28 @@
 	</target>
 
 	<target name="testing" description="Run unit tests with PHPUnit">
+		<!-- The CoverageSetupTask prepares a database which can be used to gather code coverage information for unit tests. -->
 		<coverage-setup database="../build/coverage/coverage.db">
 			<fileset dir="../application">
 				<include name="**/*.php"/>
 				<exclude name="**/*Test.php"/>
 			</fileset>
 		</coverage-setup>
-		<phpunit bootstrap="../tests/bootstrap.php" codecoverage="true">
-			<formatter type="xml" todir="../build/coverage"/>
+
+		<!-- This task runs testcases using the PHPUnit framework. It is a functional port of the Ant JUnit task. -->
+		<phpunit bootstrap="../tests/bootstrap.php" codecoverage="true" printsummary="true">
+			<formatter type="xml" todir="../build/logs" outfile="junit.xml"/>
+			<formatter type="clover" todir="../build/logs" outfile="clover.xml"/>
 			<batchtest>
 				<fileset dir="../tests">
 					<include name="**/*Test.php"/>
 				</fileset>
 			</batchtest>
 		</phpunit>
-		<phpunitreport infile="../build/coverage/testsuites.xml" format="frames" todir="../build/tests"/>
-		<coverage-report outfile="../build/coverage/coverage.xml">
-			<report toDir="../build/coverage" title="Demo"/>
-		</coverage-report>
+		<!--<phpunitreport infile="../build/coverage/testsuites.xml" format="frames" todir="../build/tests"/>-->
+		<!--<coverage-report outfile="../build/coverage/coverage.xml">-->
+			<!--<report toDir="../build/coverage" title="Demo"/>-->
+		<!--</coverage-report>-->
 	</target>
 
 </project>
