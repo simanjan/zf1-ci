@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="zf1-ci" default="build" basedir=".">
 
-	<target name="build" depends="prepare,lint,zf,testing,loc" />
+	<target name="build" depends="prepare,lint,zf,testing,loc,depend" />
 
 	<target name="clean" description="Cleanup build artifacts">
 		<delete dir="library/Zend"/>
@@ -22,9 +22,8 @@
 	<target name="lint">
 		<phplint level="verbose" deprecatedaserror="true" cachefile="test-lint-cachefile" haltonfailure="true">
 			<fileset dir=".">
-				<include name="**/*.php"/>
-				<exclude name="library/Zend"/>
-				<exclude name="library/Phing"/>
+				<include name="application/**/*.php"/>
+				<include name="public/**/*.php"/>
 			</fileset>
 		</phplint>
 	</target>
@@ -42,9 +41,9 @@
 	<target name="testing" description="Run unit tests with PHPUnit">
 		<!-- The CoverageSetupTask prepares a database which can be used to gather code coverage information for unit tests. -->
 		<coverage-setup database="build/coverage/coverage.db">
-			<fileset dir="application">
-				<include name="**/*.php"/>
-				<exclude name="**/*Test.php"/>
+			<fileset dir=".">
+				<include name="application/**/*.php"/>
+				<include name="public/**/*.php"/>
 			</fileset>
 		</coverage-setup>
 
@@ -85,8 +84,7 @@
 		<phpdepend>
 			<fileset dir=".">
 				<include name="application/**/*.php"/>
-				<exclude name="library/Zend/*"/>
-				<exclude name="library/Phing/*"/>
+				<include name="public/**/*.php"/>
 			</fileset>
 			<logger type="jdepend-xml" outfile="build/reports/jdepend.xml"/>
 			<logger type="jdepend-chart" outfile="build/reports/dependencies.svg"/>
