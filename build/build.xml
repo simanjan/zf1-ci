@@ -118,7 +118,7 @@
 
 	<!-- This task runs phpmd, a Project Mess Detector (PMD) for PHP Code -->
 	<target name="md">
-		<phpmd rulesets="build/phpmd.xml">
+		<phpmd rulesets="codesize,design,unusedcode">
 			<fileset dir=".">
 				<include name="application/**/*.php"/>
 				<include name="public/**/*.php"/>
