@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="zf1-ci" default="build" basedir=".">
 
-	<target name="build" depends="prepare,lint,zf,testing,loc,depend" />
+	<target name="build" depends="prepare,lint,zf,testing,loc" />
 
 	<target name="clean" description="Cleanup build artifacts">
 		<delete dir="library/Zend"/>
@@ -75,8 +75,8 @@
 		<phploc reportType="cli" reportName="phploc" reportDirectory="build/reports" countTests="true">
 			<fileset dir=".">
 				<include name="**/*.php"/>
-				<exclude name="library/Zend"/>
-				<exclude name="library/Phing"/>
+				<exclude name="library/Zend/*"/>
+				<exclude name="library/Phing/*"/>
 			</fileset>
 		</phploc>
 	</target>
