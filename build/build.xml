@@ -22,6 +22,7 @@
 			<fileset dir="../">
 				<include name="**/*.php"/>
 				<exclude name="library/Zend"/>
+				<exclude name="library/Phing"/>
 			</fileset>
 		</phplint>
 	</target>
@@ -60,6 +61,21 @@
 		<coverage-report outfile="../build/coverage/coverage.db">
 			<report toDir="../build/coverage" title="zf1-ci coverage report"/>
 		</coverage-report>
+	</target>
+
+	<taskdef name="phploc" classname="../library/Phing/PhpLocTask" />
+
+	<target name="phploc">
+		<tstamp>
+			<format property="check.date.time" pattern="%Y%m%d-%H%M%S" locale="en_US"/>
+		</tstamp>
+		<phploc reportType="csv" reportName="${check.date.time}-report" reportDirectory="phploc-reports" countTests="true">
+			<fileset dir="../">
+				<include name="**/*.php"/>
+				<exclude name="library/Zend"/>
+				<exclude name="library/Phing"/>
+			</fileset>
+		</phploc>
 	</target>
 
 </project>
