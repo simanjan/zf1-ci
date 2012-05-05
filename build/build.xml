@@ -134,6 +134,7 @@
 
 	<!-- This task runs phpDocumentor 2 , PHP 5.3-compatible API documentation tool -->
 	<target name="api">
+		<mkdir dir="../htmlreports/API" mode="0777"/>
 		<mkdir dir="build/api" mode="0777"/>
 		<phpdoc2 title="API Documentation" destdir="build/api" template="responsive">
 			<fileset dir=".">
