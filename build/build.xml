@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="zf1-ci" default="build" basedir=".">
 
-	<target name="build" depends="prepare,lint,zf,testing,loc,depend,cpd,code-sniffer,md" />
+	<target name="build" depends="prepare,lint,zf,testing,loc,depend,cpd,code-sniffer,md,api,cb" />
 
 	<target name="clean" description="Cleanup build artifacts">
 		<delete dir="library/Zend"/>
@@ -118,7 +118,8 @@
 
 	<!-- This task runs phpmd, a Project Mess Detector (PMD) for PHP Code -->
 	<target name="md">
-		<phpmd rulesets="codesize,design,unusedcode">
+		<!--<phpmd rulesets="codesize,design,unusedcode">-->
+		<phpmd rulesets="build/phpmd.xml">
 			<fileset dir=".">
 				<include name="application/**/*.php"/>
 				<include name="public/**/*.php"/>
@@ -127,4 +128,37 @@
 		</phpmd>
 	</target>
 
+	<target name="api">
+		<phpdoc2 title="API Documentation" destdir="build/api" template="responsive">
+			<fileset dir=".">
+				<include name="application/**/*.php"/>
+				<include name="public/**/*.php"/>
+			</fileset>
+		</phpdoc2>
+	</target>
+
+	<!--<target name="cb">-->
+		<!--<echo msg="PHP Code browser..." />-->
+		<!--<exec command="phpcb --log ${builddir}/logs --output ${builddir}/code-browser" escape="false" />-->
+	<!--</target>-->
+
+	<!--<target name="phpcb"-->
+	        <!--description="Aggregate tool output with PHP_CodeBrowser">-->
+		<!--<exec executable="phpcb">-->
+			<!--<arg value="--log" />-->
+			<!--<arg path="${basedir}/build/logs" />-->
+			<!--<arg value="--source" />-->
+			<!--<arg path="${basedir}/src" />-->
+			<!--<arg value="--output" />-->
+			<!--<arg path="${basedir}/build/code-browser" />-->
+		<!--</exec>-->
+	<!--</target>-->
+
+	<target name="cb" description="Aggregate tool output with PHP_CodeBrowser">
+		<mkdir dir="build/code-browser"/>
+		<exec command="phpcb  --log build/reports
+                          --source .
+                          --output build/code-browser"
+		      logoutput="true" />
+	</target>
 </project>
