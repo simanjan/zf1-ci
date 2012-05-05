@@ -130,16 +130,12 @@
 
 	<!-- This task runs phpDocumentor 2 , PHP 5.3-compatible API documentation tool -->
 	<target name="api">
-		<phpdoc2 title="API Documentation" destdir="build/api" template="responsive">
-			<fileset dir=".">
-				<include name="application/**/*.php"/>
-				<include name="public/**/*.php"/>
-			</fileset>
-		</phpdoc2>
 	</target>
 
 	<!-- The phpcb build target for PHP_CodeBrowser -->
 	<target name="cb" description="Aggregate tool output with PHP_CodeBrowser">
+		<mkdir dir="build/code-browser"/>
+		<exec command="phpcb  --log build/reports --source . --output build/code-browser" logoutput="true" />
 	</target>
 
 </project>
