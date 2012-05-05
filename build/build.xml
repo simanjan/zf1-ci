@@ -133,8 +133,8 @@
 
 	<!-- This task runs phpDocumentor 2 , PHP 5.3-compatible API documentation tool -->
 	<target name="api">
-		<!--<mkdir dir="../htmlreports/API" mode="0777"/>-->
-		<!--<mkdir dir="build/api" mode="0777"/>-->
+		<mkdir dir="build/api"/>
+		<touch file="build/api/index.html" />
 		<phpdoc2 title="API Documentation" destdir="build/api" template="responsive">
 			<fileset dir=".">
 				<include name="application/**/*.php"/>
@@ -146,6 +146,7 @@
 	<!-- The phpcb build target for PHP_CodeBrowser -->
 	<target name="cb" description="Aggregate tool output with PHP_CodeBrowser">
 		<mkdir dir="build/code-browser"/>
+		<touch file="build/code-browser/index.html" />
 		<exec command="phpcb  --log build/reports --source application --output build/code-browser" logoutput="true" />
 	</target>
 
