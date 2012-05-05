@@ -73,8 +73,10 @@
 		</tstamp>
 		<!--<phploc reportType="csv" reportName="${check.date.time}-report" reportDirectory="build/reports/phploc" countTests="true">-->
 		<phploc reportType="cli" reportName="phploc" reportDirectory="build/reports" countTests="true">
-			<fileset dir="application">
-				<include name="**/*.php"/>
+			<fileset dir=".">
+				<include name="application/**/*.php"/>
+				<exclude name="library/Zend/*"/>
+				<exclude name="library/Phing/*"/>
 			</fileset>
 		</phploc>
 	</target>
