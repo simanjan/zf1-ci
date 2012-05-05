@@ -5,6 +5,8 @@
 
 	<target name="clean" description="Cleanup build artifacts">
 		<delete dir="library/Zend"/>
+		<delete dir="build/api"/>
+		<delete dir="build/code-browser"/>
 		<delete dir="build/coverage"/>
 		<delete dir="build/logs"/>
 		<delete dir="build/reports"/>
@@ -13,6 +15,8 @@
 
 	<target name="prepare" depends="clean" description="Prepare for build">
 		<mkdir dir="library/Zend"/>
+		<mkdir dir="build/api"/>
+		<mkdir dir="build/code-browser"/>
 		<mkdir dir="build/coverage"/>
 		<mkdir dir="build/logs"/>
 		<mkdir dir="build/reports"/>
@@ -130,12 +134,19 @@
 
 	<!-- This task runs phpDocumentor 2 , PHP 5.3-compatible API documentation tool -->
 	<target name="api">
+		<mkdir dir="build/api"/>
+		<phpdoc2 title="API Documentation" destdir="build/api" template="responsive">
+			<fileset dir=".">
+				<include name="application/**/*.php"/>
+				<include name="public/**/*.php"/>
+			</fileset>
+		</phpdoc2>
 	</target>
 
 	<!-- The phpcb build target for PHP_CodeBrowser -->
 	<target name="cb" description="Aggregate tool output with PHP_CodeBrowser">
 		<mkdir dir="build/code-browser"/>
-		<exec command="phpcb  --log build/reports --source . --output build/code-browser" logoutput="true" />
+		<exec command="phpcb  --log build/reports --source application --output build/code-browser" logoutput="true" />
 	</target>
 
 </project>
