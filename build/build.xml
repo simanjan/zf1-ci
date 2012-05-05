@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="zf1-ci" default="build">
 
-	<target name="build" depends="prepare,lint,zf,testing" />
+	<target name="build" depends="prepare,lint,zf,testing,loc" />
 
 	<target name="clean" description="Cleanup build artifacts">
 		<delete dir="../library/Zend"/>
@@ -65,7 +65,7 @@
 
 	<taskdef name="phploc" classname="../library/Phing/PhpLocTask" />
 
-	<target name="phploc">
+	<target name="loc">
 		<tstamp>
 			<format property="check.date.time" pattern="%Y%m%d-%H%M%S" locale="en_US"/>
 		</tstamp>
