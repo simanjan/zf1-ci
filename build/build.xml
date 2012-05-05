@@ -63,7 +63,7 @@
 		</coverage-report>
 	</target>
 
-	<taskdef name="phploc" classname="${project.basedir}/library/Phing/PhpLocTask" />
+	<taskdef name="phploc" classname="${project.basedir}/library/Phing/PhpLocTask.php" />
 
 	<target name="loc">
 		<tstamp>
