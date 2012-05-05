@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="zf1-ci" default="build" basedir=".">
 
-	<target name="build" depends="prepare,lint,zf,testing,loc,depend,cpd,code-sniffer" />
+	<target name="build" depends="prepare,lint,zf,testing,loc,depend,cpd,code-sniffer,md" />
 
 	<target name="clean" description="Cleanup build artifacts">
 		<delete dir="library/Zend"/>
@@ -103,7 +103,7 @@
 		</phpcpd>
 	</target>
 
-	<!-- This task runs PHP_CodeSniffer to detect violations of a defined set of coding standards. -->
+	<!-- This task runs PHP_CodeSniffer to detect violations of a defined set of coding standards -->
 	<target name="code-sniffer">
 		<phpcodesniffer standard="Zend" format="checkstyle">
 			<fileset dir=".">
@@ -114,6 +114,17 @@
 			<formatter type="default" usefile="false"/>
 			<formatter type="checkstyle" outfile="build/reports/checkstyle.xml"/>
 		</phpcodesniffer>
+	</target>
+
+	<!-- This task runs phpmd, a Project Mess Detector (PMD) for PHP Code -->
+	<target name="md">
+		<phpmd rulesets="build/phpmd.xml">
+			<fileset dir=".">
+				<include name="application/**/*.php"/>
+				<include name="public/**/*.php"/>
+			</fileset>
+			<formatter type="xml" outfile="build/reports/pmd.xml"/>
+		</phpmd>
 	</target>
 
 </project>
