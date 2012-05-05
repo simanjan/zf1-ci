@@ -46,10 +46,11 @@
 				</fileset>
 			</batchtest>
 		</phpunit>
-		<!--<phpunitreport infile="../build/coverage/testsuites.xml" format="frames" todir="../build/tests"/>-->
-		<!--<coverage-report outfile="../build/coverage/coverage.xml">-->
-			<!--<report toDir="../build/coverage" title="Demo"/>-->
-		<!--</coverage-report>-->
+
+		<!-- The CoverageReportTask formats a coverage database into a framed HTML report using XSLT. The report can optionally make use of the Generic Syntax Highlighting library, GeSHi (See GeSHi Homepage) library to mark up source code. The path to the library (if not in the default path) can be specified as an attribute. -->
+		<coverage-report outfile="../build/coverage/coverage.db">
+			<report toDir="../build/coverage" title="zf1-ci coverage report"/>
+		</coverage-report>
 	</target>
 
 </project>
