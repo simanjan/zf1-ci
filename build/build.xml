@@ -7,6 +7,7 @@
 		<delete dir="library/Zend"/>
 		<delete dir="build/coverage"/>
 		<delete dir="build/logs"/>
+		<delete dir="build/reports"/>
 		<delete dir="build/tests"/>
 	</target>
 
@@ -14,6 +15,7 @@
 		<mkdir dir="library/Zend"/>
 		<mkdir dir="build/coverage"/>
 		<mkdir dir="build/logs"/>
+		<mkdir dir="build/reports"/>
 		<mkdir dir="build/tests"/>
 	</target>
 
@@ -69,7 +71,8 @@
 		<tstamp>
 			<format property="check.date.time" pattern="%Y%m%d-%H%M%S" locale="en_US"/>
 		</tstamp>
-		<phploc reportType="csv" reportName="${check.date.time}-report" reportDirectory="phploc-reports" countTests="true">
+		<!--<phploc reportType="csv" reportName="${check.date.time}-report" reportDirectory="build/reports/phploc" countTests="true">-->
+		<phploc reportType="cli" reportName="phploc" reportDirectory="build/reports" countTests="true">
 			<fileset dir=".">
 				<include name="**/*.php"/>
 				<exclude name="library/Zend"/>
