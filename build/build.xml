@@ -138,4 +138,8 @@
 		</phpdoc2>
 	</target>
 
+	<!-- The phpcb build target for PHP_CodeBrowser -->
+	<target name="cb" description="Aggregate tool output with PHP_CodeBrowser">
+	</target>
+
 </project>
