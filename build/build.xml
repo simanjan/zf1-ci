@@ -75,8 +75,7 @@
 		<phploc reportType="cli" reportName="phploc" reportDirectory="build/reports" countTests="true">
 			<fileset dir=".">
 				<include name="application/**/*.php"/>
-				<exclude name="library/Zend/*"/>
-				<exclude name="library/Phing/*"/>
+				<include name="public/**/*.php"/>
 			</fileset>
 		</phploc>
 	</target>
@@ -85,9 +84,9 @@
 	<target name="depend">
 		<phpdepend>
 			<fileset dir=".">
-				<include name="**/*.php"/>
-				<exclude name="library/Zend"/>
-				<exclude name="library/Phing"/>
+				<include name="application/**/*.php"/>
+				<exclude name="library/Zend/*"/>
+				<exclude name="library/Phing/*"/>
 			</fileset>
 			<logger type="jdepend-xml" outfile="build/reports/jdepend.xml"/>
 			<logger type="jdepend-chart" outfile="build/reports/dependencies.svg"/>
