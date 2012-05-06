@@ -12,7 +12,6 @@
 	</target>
 
 	<target name="prepare" depends="clean" description="Prepare for build">
-		<mkdir dir="library/Zend"/>
 		<mkdir dir="build/coverage"/>
 		<mkdir dir="build/logs"/>
 		<mkdir dir="build/reports"/>
