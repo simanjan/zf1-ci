@@ -3,14 +3,12 @@
 
 	<target name="build" depends="prepare,lint,zf,testing,loc,depend,cpd,code-sniffer,md,api,code-browser" />
 
-	<target name="clean" description="Cleanup build artifacts">
-		<delete dir="library/Zend"/>
-		<delete dir="build/api"/>
-		<delete dir="build/code-browser"/>
-		<delete dir="build/coverage"/>
-		<delete dir="build/logs"/>
-		<delete dir="build/reports"/>
-		<delete dir="build/tests"/>
+	<target name="clean" description="Cleanup build workspace">
+		<delete>
+			<fileset dir=".">
+				<include name="**/*" />
+			</fileset>
+		</delete>
 	</target>
 
 	<target name="prepare" depends="clean" description="Prepare for build">
@@ -39,7 +37,7 @@
 				<!--<include name="**/*.php" />-->
 			<!--</fileset>-->
 		<!--</copy>-->
-		<symlink target="/lib/ZendFramework-1.11.11/library/Zend" link="library/Zend" />
+		<symlink target="/lib/ZendFramework-1.11.11/library/Zend" link="library/Zend"/>
 	</target>
 
 	<target name="testing" description="Run unit tests with PHPUnit">
