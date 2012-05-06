@@ -6,7 +6,7 @@
 	<target name="clean" description="Cleanup build workspace">
 		<delete>
 			<fileset dir=".">
-				<include name="**/*" />
+				<include name="*" />
 			</fileset>
 		</delete>
 	</target>
