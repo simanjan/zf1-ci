@@ -4,7 +4,7 @@
 	<target name="build" depends="prepare,lint,zf,testing,loc,depend,cpd,code-sniffer,md,api,code-browser" />
 
 	<target name="clean" description="Cleanup build workspace">
-		<delete>
+		<delete includeemptydirs="true">
 			<fileset dir=".">
 				<include name="**/*" />
 			</fileset>
