@@ -37,7 +37,7 @@
 				<!--<include name="**/*.php" />-->
 			<!--</fileset>-->
 		<!--</copy>-->
-		<!--<symlink target="/lib/ZendFramework-1.11.11/library/Zend" link="library/Zend"/>-->
+		<symlink target="/lib/ZendFramework-1.11.11/library/Zend" link="library/Zend"/>
 	</target>
 
 	<target name="testing" description="Run unit tests with PHPUnit">
