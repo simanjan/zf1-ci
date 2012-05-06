@@ -30,13 +30,13 @@
 	<target name="zf" description="Creating symlink to Zend Framework">
 		<exec passthru="true" executable="pwd"/>
 		<echo message="${project.basedir}"/>
+		<symlink target="/lib/ZendFramework-1.11.11/library/Zend" link="library/Zend"/>
 		<!--<exec executable="cp -r /lib/ZendFramework-1.11.11/library/Zend /var/lib/jenkins/jobs/zf1-ci/workspace/library" escape="false" passthru="true" />-->
 		<!--<copy todir="library/Zend">-->
 			<!--<fileset defaultexcludes="false" dir="/lib/ZendFramework-1.11.11/library/Zend">-->
 				<!--<include name="**/*.php" />-->
 			<!--</fileset>-->
 		<!--</copy>-->
-		<symlink target="/lib/ZendFramework-1.11.11/library/Zend" link="library/Zend"/>
 	</target>
 
 	<target name="testing" description="Run unit tests with PHPUnit">
