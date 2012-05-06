@@ -28,7 +28,7 @@
 		</phplint>
 	</target>
 
-	<target name="zf" description="Creating symlink for Zend Framework">
+	<target name="zf" description="Creating symlink to Zend Framework">
 		<exec passthru="true" executable="pwd"/>
 		<echo message="${project.basedir}"/>
 		<!--<exec executable="cp -r /lib/ZendFramework-1.11.11/library/Zend /var/lib/jenkins/jobs/zf1-ci/workspace/library" escape="false" passthru="true" />-->
@@ -37,7 +37,7 @@
 				<!--<include name="**/*.php" />-->
 			<!--</fileset>-->
 		<!--</copy>-->
-		<symlink target="/lib/ZendFramework-1.11.11/library/Zend" link="library/Zend"/>
+		<!--<symlink target="/lib/ZendFramework-1.11.11/library/Zend" link="library/Zend"/>-->
 	</target>
 
 	<target name="testing" description="Run unit tests with PHPUnit">
