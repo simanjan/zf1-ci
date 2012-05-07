@@ -8,6 +8,7 @@
 			<fileset dir=".">
 				<include name="**/*"/>
 				<exclude name="application/**/*"/>
+				<exclude name="build/**/*"/>
 				<exclude name="library/**/*"/>
 				<exclude name="public/**/*"/>
 				<exclude name="tests/**/*"/>
@@ -16,11 +17,9 @@
 	</target>
 
 	<target name="prepare" depends="clean" description="Prepare for build">
-		<mkdir dir="build/api"/>
-		<mkdir dir="build/coverage"/>
-		<mkdir dir="build/logs"/>
-		<mkdir dir="build/reports"/>
-		<mkdir dir="build/tests"/>
+		<mkdir dir="artefacts/api"/>
+		<mkdir dir="artefacts/coverage"/>
+		<mkdir dir="artefacts/reports"/>
 	</target>
 
 	<target name="lint">
@@ -38,7 +37,7 @@
 
 	<target name="testing" description="Run unit tests with PHPUnit">
 		<!-- The CoverageSetupTask prepares a database which can be used to gather code coverage information for unit tests. -->
-		<coverage-setup database="build/coverage/coverage.db">
+		<coverage-setup database="artefacts/coverage/coverage.db">
 			<fileset dir=".">
 				<include name="application/**/*.php"/>
 				<include name="public/**/*.php"/>
@@ -47,8 +46,8 @@
 
 		<!-- This task runs testcases using the PHPUnit framework. It is a functional port of the Ant JUnit task. -->
 		<phpunit bootstrap="tests/bootstrap.php" codecoverage="true" printsummary="true">
-			<formatter type="xml" todir="build/logs" outfile="junit.xml"/>
-			<formatter type="clover" todir="build/logs" outfile="clover.xml"/>
+			<formatter type="xml" todir="artefacts/reports" outfile="junit.xml"/>
+			<formatter type="clover" todir="artefacts/reports" outfile="clover.xml"/>
 			<batchtest>
 				<fileset dir="tests">
 					<include name="**/*Test.php"/>
@@ -57,8 +56,8 @@
 		</phpunit>
 
 		<!-- The CoverageReportTask formats a coverage database into a framed HTML report using XSLT. The report can optionally make use of the Generic Syntax Highlighting library, GeSHi (See GeSHi Homepage) library to mark up source code. The path to the library (if not in the default path) can be specified as an attribute. -->
-		<coverage-report outfile="build/coverage/coverage.db">
-			<report toDir="build/coverage" title="zf1-ci coverage report"/>
+		<coverage-report outfile="artefacts/coverage/coverage.db">
+			<report toDir="artefacts/coverage" title="zf1-ci coverage report"/>
 		</coverage-report>
 	</target>
 
@@ -68,8 +67,8 @@
 		<tstamp>
 			<format property="check.date.time" pattern="%Y%m%d-%H%M%S" locale="en_US"/>
 		</tstamp>
-		<!--<phploc reportType="csv" reportName="${check.date.time}-report" reportDirectory="build/reports/phploc" countTests="true">-->
-		<phploc reportType="cli" reportName="phploc" reportDirectory="build/reports" countTests="true">
+		<!--<phploc reportType="csv" reportName="${check.date.time}-report" reportDirectory="artefacts/reports/phploc" countTests="true">-->
+		<phploc reportType="cli" reportName="phploc" reportDirectory="artefacts/reports" countTests="true">
 			<fileset dir=".">
 				<include name="application/**/*.php"/>
 				<include name="public/**/*.php"/>
@@ -84,9 +83,9 @@
 				<include name="application/**/*.php"/>
 				<include name="public/**/*.php"/>
 			</fileset>
-			<logger type="jdepend-xml" outfile="build/reports/jdepend.xml"/>
-			<logger type="jdepend-chart" outfile="build/reports/dependencies.svg"/>
-			<logger type="overview-pyramid" outfile="build/reports/overview-pyramid.svg"/>
+			<logger type="jdepend-xml" outfile="artefacts/reports/jdepend.xml"/>
+			<logger type="jdepend-chart" outfile="artefacts/reports/dependencies.svg"/>
+			<logger type="overview-pyramid" outfile="artefacts/reports/overview-pyramid.svg"/>
 		</phpdepend>
 	</target>
 
@@ -97,7 +96,7 @@
 				<include name="application/**/*.php"/>
 				<include name="public/**/*.php"/>
 			</fileset>
-			<formatter type="pmd" outfile="build/reports/pmd-cpd.xml"/>
+			<formatter type="pmd" outfile="artefacts/reports/pmd-cpd.xml"/>
 		</phpcpd>
 	</target>
 
@@ -110,7 +109,7 @@
 			</fileset>
 			<!--<config name="zend_ca_path" value="/path/to/ZendStudio/bin/ZendCodeAnalyzer"/>-->
 			<formatter type="default" usefile="false"/>
-			<formatter type="checkstyle" outfile="build/reports/checkstyle.xml"/>
+			<formatter type="checkstyle" outfile="artefacts/reports/checkstyle.xml"/>
 		</phpcodesniffer>
 	</target>
 
@@ -122,15 +121,15 @@
 				<include name="application/**/*.php"/>
 				<include name="public/**/*.php"/>
 			</fileset>
-			<formatter type="xml" outfile="build/reports/pmd.xml"/>
+			<formatter type="xml" outfile="artefacts/reports/pmd.xml"/>
 		</phpmd>
 	</target>
 
 	<!-- This task runs phpDocumentor 2 , PHP 5.3-compatible API documentation tool -->
 	<target name="api">
-		<mkdir dir="build/api"/>
-		<touch file="build/api/index.html" />
-		<!--<phpdoc2 title="API Documentation" destdir="build/api" template="responsive">-->
+		<mkdir dir="artefacts/api"/>
+		<touch file="artefacts/api/index.html" />
+		<!--<phpdoc2 title="API Documentation" destdir="artefacts/api" template="responsive">-->
 			<!--<fileset dir=".">-->
 				<!--<include name="application/**/*.php"/>-->
 				<!--<include name="public/**/*.php"/>-->
@@ -140,9 +139,9 @@
 
 	<!-- The phpcb build target for PHP_CodeBrowser -->
 	<target name="code-browser" description="Aggregate tool output with PHP_CodeBrowser">
-		<mkdir dir="build/code-browser"/>
-		<touch file="build/code-browser/index.html" />
-		<exec command="phpcb  --log build/reports --source application --output build/code-browser" logoutput="true" />
+		<mkdir dir="artefacts/code-browser"/>
+		<touch file="artefacts/code-browser/index.html" />
+		<exec command="phpcb  --log artefacts/reports --source application --output artefacts/code-browser" logoutput="true" />
 	</target>
 
 </project>
