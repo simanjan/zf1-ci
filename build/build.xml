@@ -3,20 +3,76 @@
 
 	<target name="build" depends="prepare,lint,zf,testing,loc,depend,cpd,code-sniffer,md,api,code-browser" />
 
+	<target name="setup-filesets">
+
+		<patternset id="all">
+			<include name="application/**/*"/>
+			<include name="build/**/*"/>
+			<include name="library/**/*"/>
+			<include name="public/**/*"/>
+			<include name="tests/**/*"/>
+			<exclude name="library/Zend/**/*"/>
+		</patternset>
+
+		<patternset id="php-application">
+			<include name="application/**/*.php"/>
+			<include name="build/**/*.php"/>
+			<include name="library/**/*.php"/>
+			<include name="public/**/*.php"/>
+			<include name="tests/**/*.php"/>
+			<exclude name="library/Zend/**/*"/>
+			<exclude name="tests/**/*Test.php"/>
+		</patternset>
+
+		<patternset id="php-tests">
+			<include name="tests/**/*Test.php"/>
+		</patternset>
+
+		<patternset id="js">
+			<include name="public/**/*.js" />
+		</patternset>
+
+		<patternset id="css">
+			<include name="public/**/*.css" />
+		</patternset>
+
+		<fileset id="src.all" dir=".">
+			<patternset refid="all"/>
+		</fileset>
+
+		<fileset id="src.php.all" dir=".">
+			<patternset refid="php-application"/>
+			<patternset refid="php-tests"/>
+		</fileset>
+
+		<fileset id="src.php.app" dir=".">
+			<patternset refid="php-application"/>
+		</fileset>
+
+		<fileset id="src.php.tests" dir=".">
+			<patternset refid="php-tests"/>
+		</fileset>
+
+		<fileset id="src.js" dir=".">
+			<patternset refid="js" />
+		</fileset>
+
+		<fileset id="src.css" dir=".">
+			<patternset refid="css" />
+		</fileset>
+
+	</target>
+
 	<target name="clean" description="Cleanup build workspace">
 		<delete includeemptydirs="true">
 			<fileset dir=".">
-				<include name="**/*"/>
-				<exclude name="application/**/*"/>
-				<exclude name="build/**/*"/>
-				<exclude name="library/**/*"/>
-				<exclude name="public/**/*"/>
-				<exclude name="tests/**/*"/>
+				<include name="artefacts/**/*"/>
 			</fileset>
 		</delete>
 	</target>
 
 	<target name="prepare" depends="clean" description="Prepare for build">
+		<mkdir dir="artefacts"/>
 		<mkdir dir="artefacts/api"/>
 		<mkdir dir="artefacts/coverage"/>
 		<mkdir dir="artefacts/reports"/>
@@ -24,10 +80,7 @@
 
 	<target name="lint">
 		<phplint level="verbose" deprecatedaserror="true" cachefile="test-lint-cachefile" haltonfailure="true">
-			<fileset dir=".">
-				<include name="application/**/*.php"/>
-				<include name="public/**/*.php"/>
-			</fileset>
+			<fileset refid="src.php.all" />
 		</phplint>
 	</target>
 
@@ -38,10 +91,7 @@
 	<target name="testing" description="Run unit tests with PHPUnit">
 		<!-- The CoverageSetupTask prepares a database which can be used to gather code coverage information for unit tests. -->
 		<coverage-setup database="artefacts/coverage/coverage.db">
-			<fileset dir=".">
-				<include name="application/**/*.php"/>
-				<include name="public/**/*.php"/>
-			</fileset>
+			<fileset refid="src.php.app" />
 		</coverage-setup>
 
 		<!-- This task runs testcases using the PHPUnit framework. It is a functional port of the Ant JUnit task. -->
@@ -49,9 +99,7 @@
 			<formatter type="xml" todir="artefacts/reports" outfile="junit.xml"/>
 			<formatter type="clover" todir="artefacts/reports" outfile="clover.xml"/>
 			<batchtest>
-				<fileset dir="tests">
-					<include name="**/*Test.php"/>
-				</fileset>
+				<fileset refid="src.php.tests" />
 			</batchtest>
 		</phpunit>
 
@@ -69,64 +117,44 @@
 		</tstamp>
 		<!--<phploc reportType="csv" reportName="${check.date.time}-report" reportDirectory="artefacts/reports/phploc" countTests="true">-->
 		<phploc reportType="cli" reportName="phploc" reportDirectory="artefacts/reports" countTests="true">
-			<fileset dir=".">
-				<include name="application/**/*.php"/>
-				<include name="public/**/*.php"/>
-			</fileset>
+			<fileset refid="src.php.app" />
 		</phploc>
 	</target>
 
-	<!-- This task runs PHP_Depend, a software analyzer and metric tool for PHP Code -->
-	<target name="depend">
+	<target name="depend" description="Run PHP_Depend, a software analyzer and metric tool for PHP Code">
 		<phpdepend>
-			<fileset dir=".">
-				<include name="application/**/*.php"/>
-				<include name="public/**/*.php"/>
-			</fileset>
+			<fileset refid="src.php.app" />
 			<logger type="jdepend-xml" outfile="artefacts/reports/jdepend.xml"/>
 			<logger type="jdepend-chart" outfile="artefacts/reports/dependencies.svg"/>
 			<logger type="overview-pyramid" outfile="artefacts/reports/overview-pyramid.svg"/>
 		</phpdepend>
 	</target>
 
-	<!-- This task runs phpcpd, a Copy/Paste Detector (CPD) for PHP Code -->
-	<target name="cpd">
+	<target name="cpd" description="Run phpcpd, a Copy/Paste Detector (CPD) for PHP Code">
 		<phpcpd minLines="3" minTokens="40">
-			<fileset dir=".">
-				<include name="application/**/*.php"/>
-				<include name="public/**/*.php"/>
-			</fileset>
+			<fileset refid="src.php.app" />
 			<formatter type="pmd" outfile="artefacts/reports/pmd-cpd.xml"/>
 		</phpcpd>
 	</target>
 
-	<!-- This task runs PHP_CodeSniffer to detect violations of a defined set of coding standards -->
-	<target name="code-sniffer">
+	<target name="code-sniffer" description="Run PHP_CodeSniffer to detect violations of a defined set of coding standards">
 		<phpcodesniffer standard="Zend" format="checkstyle">
-			<fileset dir=".">
-				<include name="application/**/*.php"/>
-				<include name="public/**/*.php"/>
-			</fileset>
+			<fileset refid="src.php.all" />
 			<!--<config name="zend_ca_path" value="/path/to/ZendStudio/bin/ZendCodeAnalyzer"/>-->
 			<formatter type="default" usefile="false"/>
 			<formatter type="checkstyle" outfile="artefacts/reports/checkstyle.xml"/>
 		</phpcodesniffer>
 	</target>
 
-	<!-- This task runs phpmd, a Project Mess Detector (PMD) for PHP Code -->
-	<target name="md">
+	<target name="md" description="Run phpmd, a Project Mess Detector (PMD) for PHP Code">
 		<!--<phpmd rulesets="codesize,design,unusedcode">-->
 		<phpmd rulesets="build/phpmd.xml">
-			<fileset dir=".">
-				<include name="application/**/*.php"/>
-				<include name="public/**/*.php"/>
-			</fileset>
+			<fileset refid="src.php.all" />
 			<formatter type="xml" outfile="artefacts/reports/pmd.xml"/>
 		</phpmd>
 	</target>
 
-	<!-- This task runs phpDocumentor 2 , PHP 5.3-compatible API documentation tool -->
-	<target name="api">
+	<target name="api" description="Run phpDocumentor 2, API documentation tool">
 		<mkdir dir="artefacts/api"/>
 		<touch file="artefacts/api/index.html" />
 		<!--<phpdoc2 title="API Documentation" destdir="artefacts/api" template="responsive">-->
@@ -137,7 +165,6 @@
 		<!--</phpdoc2>-->
 	</target>
 
-	<!-- The phpcb build target for PHP_CodeBrowser -->
 	<target name="code-browser" description="Aggregate tool output with PHP_CodeBrowser">
 		<mkdir dir="artefacts/code-browser"/>
 		<touch file="artefacts/code-browser/index.html" />
