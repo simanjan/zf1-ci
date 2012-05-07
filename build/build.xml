@@ -11,6 +11,7 @@
 			<include name="library/**/*"/>
 			<include name="public/**/*"/>
 			<include name="tests/**/*"/>
+			<exclude name="library/Phing/**/*"/>
 			<exclude name="library/Zend/**/*"/>
 		</patternset>
 
@@ -20,6 +21,7 @@
 			<include name="library/**/*.php"/>
 			<include name="public/**/*.php"/>
 			<include name="tests/**/*.php"/>
+			<exclude name="library/Phing/**/*"/>
 			<exclude name="library/Zend/**/*"/>
 			<exclude name="tests/**/*Test.php"/>
 		</patternset>
