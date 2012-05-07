@@ -13,6 +13,7 @@
 
 	<target name="prepare" depends="clean" description="Prepare for build">
 		<mkdir dir="build/coverage"/>
+		<mkdir dir="build/library"/>
 		<mkdir dir="build/logs"/>
 		<mkdir dir="build/reports"/>
 		<mkdir dir="build/tests"/>
@@ -29,6 +30,11 @@
 
 	<target name="zf" description="Creating symlink to Zend Framework">
 		<symlink target="/lib/ZendFramework-1.11.11/library/Zend" link="${project.basedir}/library/Zend"/>
+		<!--<copy todir="library/Zend">-->
+			<!--<fileset defaultexcludes="false" dir="/lib/ZendFramework-1.11.11/library/Zend">-->
+				<!--<include name="**/*.php" />-->
+			<!--</fileset>-->
+		<!--</copy>-->
 	</target>
 
 	<target name="testing" description="Run unit tests with PHPUnit">
