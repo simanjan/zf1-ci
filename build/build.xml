@@ -13,10 +13,10 @@
 
 	<target name="prepare" depends="clean" description="Prepare for build">
 		<mkdir dir="build/coverage"/>
-		<mkdir dir="build/library"/>
 		<mkdir dir="build/logs"/>
 		<mkdir dir="build/reports"/>
 		<mkdir dir="build/tests"/>
+		<mkdir dir="library"/>
 	</target>
 
 	<target name="lint">
