@@ -6,7 +6,11 @@
 	<target name="clean" description="Cleanup build workspace">
 		<delete includeemptydirs="true">
 			<fileset dir=".">
-				<include name="**/*" />
+				<include name="**/*"/>
+				<exclude name="application/**/*"/>
+				<exclude name="library/**/*"/>
+				<exclude name="public/**/*"/>
+				<exclude name="tests/**/*"/>
 			</fileset>
 		</delete>
 	</target>
@@ -16,7 +20,7 @@
 		<mkdir dir="build/logs"/>
 		<mkdir dir="build/reports"/>
 		<mkdir dir="build/tests"/>
-		<mkdir dir="library"/>
+		<!--<mkdir dir="library"/>-->
 	</target>
 
 	<target name="lint">
