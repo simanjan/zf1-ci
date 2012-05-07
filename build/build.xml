@@ -29,11 +29,6 @@
 
 	<target name="zf" description="Creating symlink to Zend Framework">
 		<symlink target="/lib/ZendFramework-1.11.11/library/Zend" link="${project.basedir}/library/Zend"/>
-		<!--<copy todir="library/Zend">-->
-			<!--<fileset defaultexcludes="false" dir="/lib/ZendFramework-1.11.11/library/Zend">-->
-				<!--<include name="**/*.php" />-->
-			<!--</fileset>-->
-		<!--</copy>-->
 	</target>
 
 	<target name="testing" description="Run unit tests with PHPUnit">
