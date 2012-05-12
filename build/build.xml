@@ -85,13 +85,13 @@
 	<target name="lint" description="Checking files for errors" depends="lint-php,lint-js" />
 
 	<target name="lint-php" description="Checking files for errors">
-		<phplint level="verbose" deprecatedaserror="true" cachefile="cache/php-lint.cache" haltonfailure="true" description="Checking PHP files for errors">
+		<phplint level="verbose" deprecatedaserror="true" cachefile="artefacts/cache/php-lint.cache" haltonfailure="true" description="Checking PHP files for errors">
 			<fileset refid="src.php.all" />
 		</phplint>
 	</target>
 
 	<target name="lint-js" description="Checking JavaScript files using JSlint">
-		<jsllint cachefile="cache/js-lint.cache" executable="/lib/jsl-0.3.0/src" description="Checking JavaScript files for errors">
+		<jsllint cachefile="artefacts/cache/js-lint.cache" executable="/lib/jsl-0.3.0/src" description="Checking JavaScript files for errors">
 			<fileset refid="src.js" />
 		</jsllint>
 	</target>
