@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="zf1-ci" default="build" basedir=".">
 
+	<property name="jslint4java.file" value="/lib/jslint4java-2.0.2/jslint4java-2.0.2.jar"/>
+
+
+
+
+
 	<target name="build" depends="prepare,lint,zf,testing,loc,depend,cpd,code-sniffer,md,api,code-browser" />
 
 	<target name="setup-filesets">
@@ -69,6 +75,7 @@
 		<delete includeemptydirs="true">
 			<fileset dir=".">
 				<include name="artefacts/**/*"/>
+				<exclude name="artefacts/cache/**/*"/>
 			</fileset>
 		</delete>
 	</target>
@@ -76,15 +83,64 @@
 	<target name="prepare" depends="setup-filesets,clean" description="Prepare for build">
 		<mkdir dir="artefacts"/>
 		<mkdir dir="artefacts/api"/>
+		<mkdir dir="artefacts/cache"/>
 		<mkdir dir="artefacts/coverage"/>
 		<mkdir dir="artefacts/reports"/>
 	</target>
 
-	<target name="lint">
-		<phplint level="verbose" deprecatedaserror="true" cachefile="test-lint-cachefile" haltonfailure="true">
+	<target name="lint" description="Checking files for errors" depends="lint-php,lint-js" />
+
+	<target name="lint-php" description="Checking files for errors">
+		<phplint level="verbose" deprecatedaserror="true" cachefile="cache/php-lint.cache" haltonfailure="true" description="Checking PHP files for errors">
 			<fileset refid="src.php.all" />
 		</phplint>
 	</target>
+
+	<target name="lint-js" description="Checking JavaScript files using JSlint">
+		<jsllint cachefile="cache/js-lint.cache" executable="/lib/jsl-0.3.0/src" description="Checking JavaScript files for errors">
+			<fileset refid="src.js" />
+		</jsllint>
+	</target>
+
+	<!--<target name="lint-js" description="Checking JavaScript files using JSlint"-->
+	        <!--depends="setup-jslint4java,setup-jslint">-->
+		<!--<foreach target="lint-js-file" param="filename" absparam="absfilename">-->
+			<!--<fileset refid="src.js"/>-->
+		<!--</foreach>-->
+	<!--</target>-->
+
+	<!--<target name="lint-js-file">-->
+		<!--<echo>Linting file: ${absfilename}</echo>-->
+		<!--<exec command="java -jar ${jslint4java.file}-->
+               <!----jslint ${jslint.file} --report checkstyle ${absfilename}"-->
+		      <!--outputProperty="report" />-->
+		<!--<php function="str_replace" returnProperty="filename.normalized">-->
+			<!--<param value="/" />-->
+			<!--<param value="-" />-->
+			<!--<param value="${filename}" />-->
+		<!--</php>-->
+		<!--<delete file="artefacts/reports/checkstyle-jslint-${filename.normalized}.xml" />-->
+		<!--<append text="${report}" destFile="artefacts/reports/checkstyle-jslint-${filename.normalized}.xml" />-->
+	<!--</target>-->
+
+	<!--<target name="setup-jslint">-->
+		<!--<phingcall target="setup-git-repo">-->
+			<!--<property name="repo.dir" value="${project.toolsdir}/jslint"/>-->
+			<!--<property name="repo.url" value="${jslint.repository.url}" />-->
+		<!--</phingcall>-->
+		<!--<property name="jslint.file"-->
+		          <!--value="${project.toolsdir}/jslint/${jslint.file}"-->
+		          <!--override="true" />-->
+		<!--<property name="project.jslint.setup" value="true" />-->
+	<!--</target>-->
+
+	<!--<property name="jslint" value="./path/to/jslint/jsl-0.3.0-mac/jsl" />-->
+	<!--<echo msg="Checking JS for errors..." />-->
+	<!--<jsllint haltonfailure="true" cachefile="./jslint.cache" executable="${jslint}" conffile="./path/to/jslint/jsl.default.conf">-->
+		<!--<fileset dir="./js">-->
+			<!--<include name="**/*.js"/>-->
+		<!--</fileset>-->
+	<!--</jsllint>-->
 
 	<target name="zf" description="Creating symlink to Zend Framework">
 		<symlink target="/lib/ZendFramework-1.11.11/library/Zend" link="${project.basedir}/library/Zend"/>
