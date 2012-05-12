@@ -23,8 +23,6 @@ class IndexControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
         $this->assertQueryContentContains("div#welcome h3", "This is your project's main page");
 
 		$this->assertQueryContentContains("div#welcome h1", "asdfasdfadsfadsfasdfasdf");
-
-		asdfsdfadsfad
     }
 
 
