@@ -22,19 +22,19 @@
 	<target name="prepare" depends="show-env-properties,setup-filesets,clean,make-dirs,include-zf" description="Preparing workspace for build" />
 
 	<target name="show-env-properties">
-		<echo message="System architecture: $(host.arch)" />
-		<echo message="Domain name:         $(host.domain)" />
-		<echo message="File system:         $(host.fstype)" />
-		<echo message="OS hostname:         $(host.name)" />
-		<echo message="OS description:      $(host.os)" />
-		<echo message="PHP version:         $(php.version)" />
+		<echo message="System architecture: ${host.arch}" />
+		<echo message="Domain name:         ${host.domain}" />
+		<echo message="File system:         ${host.fstype}" />
+		<echo message="OS hostname:         ${host.name}" />
+		<echo message="OS description:      ${host.os}" />
+		<echo message="PHP version:         ${php.version}" />
 
-		<echo message="Phing version:       $(phing.version)" />
-		<echo message="Phing directory:     $(phing.home)" />
+		<echo message="Phing version:       ${phing.version}" />
+		<echo message="Phing directory:     ${phing.home}" />
 
-		<echo message="Project Build file:  $(phing.file)" />
-		<echo message="Project name:        $(phing.project.name)" />
-		<echo message="Project basedir:     $(project.basedir)" />
+		<echo message="Project Build file:  ${phing.file}" />
+		<echo message="Project name:        ${phing.project.name}" />
+		<echo message="Project basedir:     ${project.basedir}" />
 	</target>
 
 	<target name="setup-filesets">
