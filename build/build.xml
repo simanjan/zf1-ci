@@ -1,7 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="zf1-ci" default="build" basedir=".">
 
-	<target name="build" depends="prepare,lint,zf,testing,loc,depend,cpd,code-sniffer,md,api,code-browser" />
+	<!--
+		Defining custom tasks
+	-->
+	<taskdef name="phploc" classname="phing.tasks.custom.PHPLocTask" />
+
+	<!--
+		Default Target
+	-->
+	<target name="build" depends="prepare,lint,testing,inspection,docs" />
+
+	<!--
+		Prepare workspace for build processing:
+		- show environment properties
+		- setting up file sets for targets
+		- cleaning workspace
+		- creating empty directories
+		- including Zend Framework
+	-->
+	<target name="prepare" depends="show-env-properties,setup-filesets,clean,make-dirs,include-zf" description="Preparing workspace for build" />
+
+	<target name="show-env-properties">
+		<echo message="System architecture: $(host.arch)" />
+		<echo message="Domain name:         $(host.domain)" />
+		<echo message="File system:         $(host.fstype)" />
+		<echo message="OS hostname:         $(host.name)" />
+		<echo message="OS description:      $(host.os)" />
+		<echo message="PHP version:         $(php.version)" />
+
+		<echo message="Phing version:       $(phing.version)" />
+		<echo message="Phing directory:     $(phing.home)" />
+
+		<echo message="Project Build file:  $(phing.file)" />
+		<echo message="Project name:        $(phing.project.name)" />
+		<echo message="Project basedir:     $(project.basedir)" />
+	</target>
 
 	<target name="setup-filesets">
 
@@ -65,7 +99,7 @@
 
 	</target>
 
-	<target name="clean" description="Cleanup build workspace">
+	<target name="clean" description="Cleaning workspace">
 		<delete includeemptydirs="true">
 			<fileset dir=".">
 				<include name="artefacts/**/*"/>
@@ -74,7 +108,7 @@
 		</delete>
 	</target>
 
-	<target name="prepare" depends="setup-filesets,clean" description="Prepare for build">
+	<target name="make-dirs" description="Creating directories for artefacts">
 		<mkdir dir="artefacts"/>
 		<mkdir dir="artefacts/api"/>
 		<mkdir dir="artefacts/cache"/>
@@ -82,31 +116,50 @@
 		<mkdir dir="artefacts/reports"/>
 	</target>
 
-	<target name="lint" description="Checking files for errors" depends="lint-php,lint-js" />
+	<target name="include-zf" description="Creating symlink to Zend Framework">
+		<symlink target="/lib/ZendFramework-1.11.11/library/Zend" link="${project.basedir}/library/Zend"/>
+	</target>
 
-	<target name="lint-php" description="Checking files for errors">
+	<!--
+		Checking files for errors:
+		- PHP (php -l)
+		- Javascript (JSLint)
+		- CSS (CSSLint)
+	-->
+	<target name="lint" description="Checking files for errors" depends="lint-php,lint-js,lint-css" />
+
+	<target name="lint-php" description="Checking PHP files for errors">
 		<phplint level="verbose" deprecatedaserror="true" cachefile="artefacts/cache/php-lint.cache" haltonfailure="true" description="Checking PHP files for errors">
 			<fileset refid="src.php.all" />
 		</phplint>
 	</target>
 
-	<target name="lint-js" description="Checking JavaScript files using JSlint">
-		<jsllint cachefile="artefacts/cache/js-lint.cache" executable="/lib/jsl-0.3.0/src" description="Checking JavaScript files for errors">
-			<fileset refid="src.js" />
-		</jsllint>
+	<target name="lint-js" description="Checking JavaScript files for errors using JSlint">
+		<!--<jsllint cachefile="artefacts/cache/js-lint.cache" executable="/lib/jsl-0.3.0/src" description="Checking JavaScript files for errors">-->
+			<!--<fileset refid="src.js" />-->
+		<!--</jsllint>-->
 	</target>
 
-	<target name="zf" description="Creating symlink to Zend Framework">
-		<symlink target="/lib/ZendFramework-1.11.11/library/Zend" link="${project.basedir}/library/Zend"/>
+	<target name="lint-css" description="Checking CSS files for errors using CSSLint">
+		<!--TODO-->
 	</target>
 
-	<target name="testing" description="Run unit tests with PHPUnit">
-		<!-- The CoverageSetupTask prepares a database which can be used to gather code coverage information for unit tests. -->
+	<!--
+		Automated testing:
+		- setting up code coverage database
+		- running automated tests
+		- creating code coverage report
+	-->
+	<target name="testing" description="Running automated tests" depends="coverage-setup,phpunit,coverage-report" />
+
+	<target name="coverage-setup" description="Preparing database for gathering code coverage information for unit tests">
+		<!-- The CoverageSetupTask . -->
 		<coverage-setup database="artefacts/coverage/coverage.db">
 			<fileset refid="src.php.app" />
 		</coverage-setup>
+	</target>
 
-		<!-- This task runs testcases using the PHPUnit framework. It is a functional port of the Ant JUnit task. -->
+	<target name="phpunit" description="Running unit tests with PHPUnit">
 		<phpunit bootstrap="tests/bootstrap.php" codecoverage="true" printsummary="true">
 			<formatter type="xml" todir="artefacts/reports" outfile="junit.xml"/>
 			<formatter type="clover" todir="artefacts/reports" outfile="clover.xml"/>
@@ -114,16 +167,27 @@
 				<fileset refid="src.php.tests" />
 			</batchtest>
 		</phpunit>
+	</target>
 
-		<!-- The CoverageReportTask formats a coverage database into a framed HTML report using XSLT. The report can optionally make use of the Generic Syntax Highlighting library, GeSHi (See GeSHi Homepage) library to mark up source code. The path to the library (if not in the default path) can be specified as an attribute. -->
+	<target name="coverage-report" description="Generating coverage report from code coverage database">
+		<!-- The report can optionally make use of the Generic Syntax Highlighting library, GeSHi (See GeSHi Homepage) library to mark up source code -->
 		<coverage-report outfile="artefacts/coverage/coverage.db">
 			<report toDir="artefacts/coverage" title="zf1-ci coverage report"/>
 		</coverage-report>
 	</target>
 
-	<taskdef name="phploc" classname="phing.tasks.custom.PHPLocTask" />
+	<!--
+		Automated inspection:
+		- generating code statistics with phploc
+		- analyzing code and gathering metrics with PHP_Depend
+		- detecting copy/pasted code with PHP Copy/Paste Detection
+		- detecting violations of a defined set of coding standards with PHP_CodeSniffer (checkstyle)
+		- detecting messy code with Project Mess Detector (PMD) for PHP Code
+	-->
+	<target name="inspection" description="Making automated code inspection" depends="php-loc,php-depend,php-cpd,php-code-sniffer,php-md">
+	</target>
 
-	<target name="loc">
+	<target name="php-loc" description="Generating code statistics">
 		<tstamp>
 			<format property="check.date.time" pattern="%Y%m%d-%H%M%S" locale="en_US"/>
 		</tstamp>
@@ -133,7 +197,7 @@
 		</phploc>
 	</target>
 
-	<target name="depend" description="Run PHP_Depend, a software analyzer and metric tool for PHP Code">
+	<target name="php-depend" description="Analyzing code and gathering metrics">
 		<phpdepend>
 			<fileset refid="src.php.app" />
 			<logger type="jdepend-xml" outfile="artefacts/reports/jdepend.xml"/>
@@ -142,14 +206,14 @@
 		</phpdepend>
 	</target>
 
-	<target name="cpd" description="Run phpcpd, a Copy/Paste Detector (CPD) for PHP Code">
+	<target name="php-cpd" description="Detecting copy/pasted code">
 		<phpcpd minLines="3" minTokens="40">
 			<fileset refid="src.php.app" />
 			<formatter type="pmd" outfile="artefacts/reports/pmd-cpd.xml"/>
 		</phpcpd>
 	</target>
 
-	<target name="code-sniffer" description="Run PHP_CodeSniffer to detect violations of a defined set of coding standards">
+	<target name="php-code-sniffer" description="Detecting violations of a defined set of coding standards">
 		<phpcodesniffer standard="Zend" format="checkstyle">
 			<fileset refid="src.php.all" />
 			<!--<config name="zend_ca_path" value="/path/to/ZendStudio/bin/ZendCodeAnalyzer"/>-->
@@ -158,13 +222,20 @@
 		</phpcodesniffer>
 	</target>
 
-	<target name="md" description="Run phpmd, a Project Mess Detector (PMD) for PHP Code">
+	<target name="php-md" description="Detecting messy code">
 		<!--<phpmd rulesets="codesize,design,unusedcode">-->
 		<phpmd rulesets="build/phpmd.xml">
 			<fileset refid="src.php.all" />
 			<formatter type="xml" outfile="artefacts/reports/pmd.xml"/>
 		</phpmd>
 	</target>
+
+	<!--
+		Generating technical documentation:
+		- API with phpDocumentor 2
+		- Code Browser with phpcb
+	-->
+	<target name="docs" description="Generating documentation" depends="api,code-browser" />
 
 	<target name="api" description="Run phpDocumentor 2, API documentation tool">
 		<mkdir dir="artefacts/api"/>
