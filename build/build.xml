@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="zf1-ci" default="build" basedir=".">
 
+	<property file="../build.properties"  />
+
 	<!--
 		Defining custom tasks
 	-->
@@ -9,7 +11,7 @@
 	<!--
 		Default Target
 	-->
-	<target name="build" depends="prepare,lint,testing,inspection,docs" />
+	<target name="build" depends="prepare,lint,testing,inspection,docs,deploy" />
 
 	<!--
 		Prepare workspace for build processing:
@@ -252,6 +254,15 @@
 		<mkdir dir="artefacts/code-browser"/>
 		<touch file="artefacts/code-browser/index.html" />
 		<exec command="phpcb  --log artefacts/reports --source application --output artefacts/code-browser" logoutput="true" />
+	</target>
+
+	<!--
+		Deploying application on the server:
+	-->
+	<target name="deploy" description="Deploying application on the server">
+		<scp host="ssh.zenda.neolocation.net" port="2200" username="Sextrascriptcom" password="M2WXLOJcInqU" todir="/h/extrascriptcom/test-deploy">
+			<fileset refid="src.php.all" />
+		</scp>
 	</target>
 
 </project>
