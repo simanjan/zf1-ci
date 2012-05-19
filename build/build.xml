@@ -279,9 +279,9 @@
 			<fileset refid="src.deploy" />
 		</scp>
 
-		<echo message="rm -rf ${development.ssh.stable_dir} &amp;&amp; mkdir ${development.ssh.stable_dir} &amp;&amp; mv ${development.ssh.to_dir} ${development.ssh.stable_dir} &amp;&amp; mkdir ${development.ssh.to_dir} &amp;&amp; mv ${development.ssh.temp_dir} ${development.ssh.to_dir}"/>
+		<echo message="rm -rf ${development.ssh.stable_dir} &amp;&amp; mv ${development.ssh.to_dir} ${development.ssh.stable_dir} &amp;&amp; mv ${development.ssh.temp_dir} ${development.ssh.to_dir}"/>
 		<ssh host="${ssh.host}" port="${ssh.port}" username="${ssh.username}" password="${ssh.password}"
-		     command="rm -rf ${development.ssh.stable_dir} &amp;&amp; mkdir ${development.ssh.stable_dir} &amp;&amp; mv ${development.ssh.to_dir} ${development.ssh.stable_dir} &amp;&amp; mkdir ${development.ssh.to_dir} &amp;&amp; mv ${development.ssh.temp_dir} ${development.ssh.to_dir}"/>
+		     command="rm -rf ${development.ssh.stable_dir} &amp;&amp; mv ${development.ssh.to_dir} ${development.ssh.stable_dir} &amp;&amp; mv ${development.ssh.temp_dir} ${development.ssh.to_dir}"/>
 
 		<echo message="DbDeploy"/>
 		<dbdeploy url="mysql:host=${db.host};dbname=${development.db.name}" userid="${db.username}" password="${db.password}" dir="db/deltas" outputfile="artefacts/deploy.sql" undooutputfile="artefacts/undo.sql"/>
