@@ -272,8 +272,11 @@
 
 		<ssh host="${development.ssh.host}" port="${development.ssh.port}" username="${development.ssh.username}" password="${development.ssh.password}"/>
 		<echo>Test exec pwd</echo>
-		<exec command="ssh pwd"/>
-		<exec command="pwd"/>
+		<exec command="ssh pwd" outputProperty="pssh"/>
+		<echo>Test ${pssh}</echo>
+		<exec command="pwd" outputProperty="ppwd"/>
+		<echo>Test exec pwd</echo>
+		<echo>Test ${ppwd}</echo>
 
 		<scp host="${development.ssh.host}" port="${development.ssh.port}" username="${development.ssh.username}" password="${development.ssh.password}" todir="${development.ssh.todir}">
 			<fileset refid="src.deploy" />
