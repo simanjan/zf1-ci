@@ -285,7 +285,7 @@
 
 		<echo message="DbDeploy"/>
 		<dbdeploy url="mysql:host=${db.host};dbname=${db.name}" userid="${db.username}" password="${db.password}" dir="db/deltas" outputfile="artefacts/deploy.sql" undooutputfile="artefacts/undo.sql"/>
-		<pdosqlexec url="mysql:host=${db.host};dbname=${db.name}" userid="${db.username}" password="${db.password}" src="artefacts/deploy.sql"/>
+		<pdosqlexec url="mysql:host=${db.host};dbname=${development.db.name}" userid="${db.username}" password="${db.password}" src="artefacts/deploy.sql"/>
 
 	</target>
 
