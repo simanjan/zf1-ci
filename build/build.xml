@@ -89,7 +89,7 @@
 			<patternset refid="php-tests"/>
 		</fileset>
 
-		<fileset id="src.php.app" dir=".">
+		<fileset id="src.php.application" dir=".">
 			<patternset refid="php-application"/>
 		</fileset>
 
@@ -163,7 +163,7 @@
 	<target name="coverage-setup" description="Preparing database for gathering code coverage information for unit tests">
 		<!-- The CoverageSetupTask . -->
 		<coverage-setup database="artefacts/coverage/coverage.db">
-			<fileset refid="src.php.app" />
+			<fileset refid="src.php.application" />
 		</coverage-setup>
 	</target>
 
@@ -201,13 +201,13 @@
 		</tstamp>
 		<!--<phploc reportType="csv" reportName="${check.date.time}-report" reportDirectory="artefacts/reports/phploc" countTests="true">-->
 		<phploc reportType="cli" reportName="phploc" reportDirectory="artefacts/reports" countTests="true">
-			<fileset refid="src.php.app" />
+			<fileset refid="src.php.application" />
 		</phploc>
 	</target>
 
 	<target name="php-depend" description="Analyzing code and gathering metrics">
 		<phpdepend>
-			<fileset refid="src.php.app" />
+			<fileset refid="src.php.application" />
 			<logger type="jdepend-xml" outfile="artefacts/reports/jdepend.xml"/>
 			<logger type="jdepend-chart" outfile="artefacts/reports/dependencies.svg"/>
 			<logger type="overview-pyramid" outfile="artefacts/reports/overview-pyramid.svg"/>
@@ -216,7 +216,7 @@
 
 	<target name="php-cpd" description="Detecting copy/pasted code">
 		<phpcpd minLines="3" minTokens="40">
-			<fileset refid="src.php.app" />
+			<fileset refid="src.php.application" />
 			<formatter type="pmd" outfile="artefacts/reports/pmd-cpd.xml"/>
 		</phpcpd>
 	</target>
