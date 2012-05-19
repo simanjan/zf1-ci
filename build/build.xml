@@ -270,7 +270,7 @@
 	-->
 	<target name="deploy" description="Deploying application on the server">
 
-		<echo message="rm -rf ${development.ssh.temp_dir} &amp;&amp; mkdir ${development.ssh.temp_dir} && mkdir ${development.ssh.to_dir}"/>
+		<echo message="rm -rf ${development.ssh.temp_dir} &amp;&amp; mkdir ${development.ssh.temp_dir} &amp;&amp; mkdir ${development.ssh.to_dir}"/>
 		<ssh host="${ssh.host}" port="${ssh.port}" username="${ssh.username}" password="${ssh.password}"
 			command="rm -rf ${development.ssh.temp_dir} &amp;&amp; mkdir ${development.ssh.temp_dir}"/>
 
