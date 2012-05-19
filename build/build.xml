@@ -56,10 +56,8 @@
 			<include name="build/**/*.php"/>
 			<include name="library/**/*.php"/>
 			<include name="public/**/*.php"/>
-			<include name="tests/**/*.php"/>
 			<exclude name="library/Phing/**/*"/>
 			<exclude name="library/Zend/**/*"/>
-			<exclude name="tests"/>
 		</patternset>
 
 		<patternset id="php-tests">
