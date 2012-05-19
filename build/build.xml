@@ -283,6 +283,7 @@
 		<ssh host="${ssh.host}" port="${ssh.port}" username="${ssh.username}" password="${ssh.password}"
 		     command="rm -rf ${development.ssh.stable_dir} &amp;&amp; mv ${development.ssh.to_dir} ${development.ssh.stable_dir} &amp;&amp; mv ${development.ssh.temp_dir} ${development.ssh.to_dir}"/>
 
+		<mkdir dir="${development.ssh.to_dir}/library"/>
 		<mkdir dir="${development.ssh.to_dir}/library/Zend"/>
 		<symlink target="/h/extrascriptcom/ZendFramework-1.11.11/library/Zend" link="${development.ssh.to_dir}/library/Zend"/>
 
