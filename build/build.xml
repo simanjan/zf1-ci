@@ -270,20 +270,17 @@
 	-->
 	<target name="deploy" description="Deploying application on the server">
 
-		<ssh host="${development.ssh.host}" port="${development.ssh.port}" username="${development.ssh.username}" password="${development.ssh.password}"/>
-		<echo>Test exec pwd</echo>
-		<exec command="ssh pwd" outputProperty="pssh"/>
-		<echo>Test ${pssh}</echo>
-		<exec command="pwd" outputProperty="ppwd"/>
-		<echo>Test exec pwd</echo>
-		<echo>Test ${ppwd}</echo>
+		<echo message="rm -rf ${development.ssh.todir} && mkdir ${development.ssh.todir}"/>
+		<ssh host="${development.ssh.host}" port="${development.ssh.port}" username="${development.ssh.username}" password="${development.ssh.password}"
+			command="rm -rf ${development.ssh.todir} && mkdir ${development.ssh.todir}"/>
 
+		<echo message="SCP application files to ${development.ssh.todir}"/>
 		<scp host="${development.ssh.host}" port="${development.ssh.port}" username="${development.ssh.username}" password="${development.ssh.password}" todir="${development.ssh.todir}">
 			<fileset refid="src.deploy" />
 		</scp>
 
+		<echo message="DbDeploy"/>
 		<dbdeploy url="mysql:host=${development.db.host};dbname=${development.db.name}" userid="${development.db.username}" password="${development.db.password}" dir="db/deltas" outputfile="artefacts/deploy.sql" undooutputfile="artefacts/undo.sql"/>
-
 		<pdosqlexec url="mysql:host=${development.db.host};dbname=${development.db.name}" userid="${development.db.username}" password="${development.db.password}" src="artefacts/deploy.sql"/>
 
 	</target>
