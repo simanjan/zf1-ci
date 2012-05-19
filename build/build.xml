@@ -78,6 +78,12 @@
 			<patternset refid="all"/>
 		</fileset>
 
+		<fileset id="src.deploy" dir=".">
+			<patternset refid="php-application"/>
+			<patternset refid="js" />
+			<patternset refid="css" />
+		</fileset>
+
 		<fileset id="src.php.all" dir=".">
 			<patternset refid="php-application"/>
 			<patternset refid="php-tests"/>
@@ -261,8 +267,13 @@
 	-->
 	<target name="deploy" description="Deploying application on the server">
 		<scp host="ssh.zenda.neolocation.net" port="2200" username="Sextrascriptcom" password="M2WXLOJcInqU" todir="/h/extrascriptcom/test-deploy">
-			<fileset refid="src.php.all" />
+			<fileset refid="src.deploy" />
 		</scp>
+
+		<dbdeploy url="mysql:host=${development.db.host};dbname=${development.db.name}" userid="${development.db.user}" password="${development.db.password}" dir="db/deltas" outputfile="artefacts/deploy.sql" undooutputfile="artefacts/undo.sql"/>
+
+		<pdosqlexec url="mysql:host=${development.db.host};dbname=${development.db.name}" userid="${development.db.user}" password="${development.db.password}" src="artefacts/deploy.sql"/>
+
 	</target>
 
 </project>
