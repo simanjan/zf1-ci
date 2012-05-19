@@ -266,13 +266,13 @@
 		Deploying application on the server:
 	-->
 	<target name="deploy" description="Deploying application on the server">
-		<scp host="ssh.zenda.neolocation.net" port="2200" username="Sextrascriptcom" password="M2WXLOJcInqU" todir="/h/extrascriptcom/test-deploy">
+		<scp host="${development.ssh.host}" port="${development.ssh.port}" username="${development.ssh.username}" password="${development.ssh.password}" todir="${development.ssh.todir}">
 			<fileset refid="src.deploy" />
 		</scp>
 
-		<dbdeploy url="mysql:host=${development.db.host};dbname=${development.db.name}" userid="${development.db.user}" password="${development.db.password}" dir="db/deltas" outputfile="artefacts/deploy.sql" undooutputfile="artefacts/undo.sql"/>
+		<dbdeploy url="mysql:host=${development.db.host};dbname=${development.db.name}" userid="${development.db.username}" password="${development.db.password}" dir="db/deltas" outputfile="artefacts/deploy.sql" undooutputfile="artefacts/undo.sql"/>
 
-		<pdosqlexec url="mysql:host=${development.db.host};dbname=${development.db.name}" userid="${development.db.user}" password="${development.db.password}" src="artefacts/deploy.sql"/>
+		<pdosqlexec url="mysql:host=${development.db.host};dbname=${development.db.name}" userid="${development.db.username}" password="${development.db.password}" src="artefacts/deploy.sql"/>
 
 	</target>
 
