@@ -270,9 +270,9 @@
 	-->
 	<target name="deploy" description="Deploying application on the server">
 
-		<echo message="rm -rf ${development.ssh.temp_dir} &amp;&amp; mkdir ${development.ssh.temp_dir} &amp;&amp; mkdir ${development.ssh.to_dir}"/>
+		<echo message="Cleaning deploy dir, creating deploy and document dir"/>
 		<ssh host="${ssh.host}" port="${ssh.port}" username="${ssh.username}" password="${ssh.password}"
-			command="rm -rf ${development.ssh.temp_dir} &amp;&amp; mkdir ${development.ssh.temp_dir}"/>
+			command="rm -rf ${development.ssh.temp_dir} &amp;&amp; mkdir ${development.ssh.temp_dir} &amp;&amp; mkdir ${development.ssh.to_dir}"/>
 
 		<echo message="SCP application files to ${development.ssh.temp_dir}"/>
 		<scp host="${ssh.host}" port="${ssh.port}" username="${ssh.username}" password="${ssh.password}" todir="${development.ssh.temp_dir}">
