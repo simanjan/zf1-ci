@@ -72,6 +72,10 @@
 			<include name="public/**/*.css" />
 		</patternset>
 
+		<patternset id="phtml">
+			<include name="application/**/*.phtml" />
+		</patternset>
+
 		<patternset id="other">
 			<include name="**/.htaccess" />
 			<include name="**/*.ini" />
@@ -83,6 +87,7 @@
 
 		<fileset id="src.deploy" dir=".">
 			<patternset refid="php-application"/>
+			<patternset refid="phtml"/>
 			<patternset refid="js" />
 			<patternset refid="css" />
 			<patternset refid="other" />
