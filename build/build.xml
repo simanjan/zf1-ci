@@ -287,7 +287,7 @@
 		- creating symlink to Zend Framework files;
 		- copying files.
 	-->
-	<target name="deploy" description="Deploying application on the server" depends="prepare,include-zf">
+	<target name="deploy" description="Deploying application on the server" depends="prepare">
 		<if>
 			<equals arg1="${env}" arg2="local" />
 
