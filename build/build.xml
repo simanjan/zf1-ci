@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="zf1-ci" default="build" basedir=".">
 
-	<property file="../build.properties"  />
-
 	<!--
-		Defining custom tasks
+		Loading property file for current environment
 	-->
-	<taskdef name="phploc" classname="phing.tasks.custom.PHPLocTask" />
+	<if>
+		<isset property="env" />
+		<then>
+			<property file="build.${env}.properties" />
+		</then>
+		<else>
+			<property file="build.local.properties" />
+		</else>
+	</if>
 
 	<!--
 		Default Target
 	-->
-	<target name="build" depends="prepare,lint,testing,inspection,docs,deploy" />
+	<target name="build" depends="prepare,testing,inspection,docs,deploy" />
 
 	<!--
 		Prepare workspace for build processing:
@@ -21,7 +27,7 @@
 		- creating empty directories
 		- including Zend Framework
 	-->
-	<target name="prepare" depends="show-env-properties,setup-filesets,clean,make-dirs,include-zf" description="Preparing workspace for build" />
+	<target name="prepare" depends="show-env-properties,setup-filesets,clean,make-dirs" description="Preparing workspace for build" />
 
 	<target name="show-env-properties">
 		<echo message="System architecture: ${host.arch}" />
@@ -123,42 +129,20 @@
 				<exclude name="artefacts/cache/**/*"/>
 			</fileset>
 		</delete>
+		<delete>
+			<fileset dir="${dir.deploy}">
+				<include name="**/*"/>
+			</fileset>
+		</delete>
 	</target>
 
 	<target name="make-dirs" description="Creating directories for artefacts">
 		<mkdir dir="artefacts"/>
 		<mkdir dir="artefacts/api"/>
 		<mkdir dir="artefacts/cache"/>
+		<mkdir dir="artefacts/deploy"/>
 		<mkdir dir="artefacts/coverage"/>
 		<mkdir dir="artefacts/reports"/>
-	</target>
-
-	<target name="include-zf" description="Creating symlink to Zend Framework">
-		<symlink target="/lib/ZendFramework-1.11.11/library/Zend" link="${project.basedir}/library/Zend"/>
-	</target>
-
-	<!--
-		Checking files for errors:
-		- PHP (php -l)
-		- Javascript (JSLint)
-		- CSS (CSSLint)
-	-->
-	<target name="lint" description="Checking files for errors" depends="lint-php,lint-js,lint-css" />
-
-	<target name="lint-php" description="Checking PHP files for errors">
-		<phplint level="verbose" deprecatedaserror="true" cachefile="artefacts/cache/php-lint.cache" haltonfailure="true" description="Checking PHP files for errors">
-			<fileset refid="src.php.all" />
-		</phplint>
-	</target>
-
-	<target name="lint-js" description="Checking JavaScript files for errors using JSlint">
-		<!--<jsllint cachefile="artefacts/cache/js-lint.cache" executable="/lib/jsl-0.3.0/src" description="Checking JavaScript files for errors">-->
-			<!--<fileset refid="src.js" />-->
-		<!--</jsllint>-->
-	</target>
-
-	<target name="lint-css" description="Checking CSS files for errors using CSSLint">
-		<!--TODO-->
 	</target>
 
 	<!--
@@ -167,7 +151,7 @@
 		- running automated tests
 		- creating code coverage report
 	-->
-	<target name="testing" description="Running automated tests" depends="coverage-setup,phpunit,coverage-report" />
+	<target name="testing" description="Running automated tests" depends="prepare,coverage-setup,phpunit,coverage-report" />
 
 	<target name="coverage-setup" description="Preparing database for gathering code coverage information for unit tests">
 		<!-- The CoverageSetupTask . -->
@@ -201,8 +185,36 @@
 		- detecting violations of a defined set of coding standards with PHP_CodeSniffer (checkstyle)
 		- detecting messy code with Project Mess Detector (PMD) for PHP Code
 	-->
-	<target name="inspection" description="Making automated code inspection" depends="php-loc,php-depend,php-cpd,php-code-sniffer,php-md">
+	<target name="inspection" description="Making automated code inspection" depends="prepare,lint,php-loc,php-depend,php-cpd,php-code-sniffer,php-md"/>
+
+	<!--
+		Checking files for errors:
+		- PHP (php -l)
+		- Javascript (JSLint)
+		- CSS (CSSLint)
+	-->
+	<target name="lint" description="Checking files for errors" depends="prepare,lint-php,lint-js,lint-css" />
+
+	<target name="lint-php" description="Checking PHP files for errors">
+		<phplint level="verbose" deprecatedaserror="true" cachefile="artefacts/cache/php-lint.cache" haltonfailure="true" description="Checking PHP files for errors">
+			<fileset refid="src.php.all" />
+		</phplint>
 	</target>
+
+	<target name="lint-js" description="Checking JavaScript files for errors using JSlint">
+		<!--<jsllint cachefile="artefacts/cache/js-lint.cache" executable="/lib/jsl-0.3.0/src" description="Checking JavaScript files for errors">-->
+		<!--<fileset refid="src.js" />-->
+		<!--</jsllint>-->
+	</target>
+
+	<target name="lint-css" description="Checking CSS files for errors using CSSLint">
+		<!--TODO-->
+	</target>
+
+	<!--
+		Defining custom tasks
+	-->
+	<taskdef name="phploc" classname="${project.basedir}/library.Phing.PhpLocTask" />
 
 	<target name="php-loc" description="Generating code statistics">
 		<tstamp>
@@ -252,7 +264,7 @@
 		- API with phpDocumentor 2
 		- Code Browser with phpcb
 	-->
-	<target name="docs" description="Generating documentation" depends="api,code-browser" />
+	<target name="docs" description="Generating documentation" depends="prepare,api,code-browser" />
 
 	<target name="api" description="Run phpDocumentor 2, API documentation tool">
 		<mkdir dir="artefacts/api"/>
@@ -273,26 +285,44 @@
 
 	<!--
 		Deploying application on the server:
+		- creating symlink to Zend Framework files;
+		- copying files.
 	-->
-	<target name="deploy" description="Deploying application on the server">
+	<target name="deploy" description="Deploying application on the server" depends="prepare,include-zf">
+		<if>
+			<equals arg1="${env}" arg2="local" />
 
-		<echo message="Cleaning deploy dir, creating deploy and document dir"/>
-		<ssh host="${ssh.host}" port="${ssh.port}" username="${ssh.username}" password="${ssh.password}"
-			command="rm -rf ${development.ssh.temp_dir} &amp;&amp; mkdir ${development.ssh.temp_dir} &amp;&amp; mkdir ${development.ssh.to_dir}"/>
+			<then>
+				<copy todir="${dir.deploy}">
+					<fileset refid="src.deploy"/>
+				</copy>
+			</then>
 
-		<echo message="SCP application files to ${development.ssh.temp_dir}"/>
-		<scp host="${ssh.host}" port="${ssh.port}" username="${ssh.username}" password="${ssh.password}" todir="${development.ssh.temp_dir}">
-			<fileset refid="src.deploy" />
-		</scp>
+			<else>
+				<echo message="Cleaning deploy dir, creating deploy and document dir"/>
+				<ssh host="${ssh.host}" port="${ssh.port}" username="${ssh.username}" password="${ssh.password}"
+				     command="rm -rf ${ssh.path.temp} &amp;&amp; mkdir ${ssh.path.temp} &amp;&amp; mkdir ${ssh.path.to}"/>
 
-		<echo message="rm -rf ${development.ssh.stable_dir} &amp;&amp; mv ${development.ssh.to_dir} ${development.ssh.stable_dir} &amp;&amp; mv ${development.ssh.temp_dir} ${development.ssh.to_dir} &amp;&amp; cp /h/extrascriptcom/htaccess-dev ${development.ssh.to_dir}/.htaccess &amp;&amp; mkdir -p ${development.ssh.to_dir}/library &amp;&amp; ln -s /h/extrascriptcom/ZendFramework-1.11.11/library/Zend ${development.ssh.to_dir}/library"/>
-		<ssh host="${ssh.host}" port="${ssh.port}" username="${ssh.username}" password="${ssh.password}"
-		     command="rm -rf ${development.ssh.stable_dir} &amp;&amp; mv ${development.ssh.to_dir} ${development.ssh.stable_dir} &amp;&amp; mv ${development.ssh.temp_dir} ${development.ssh.to_dir} &amp;&amp; cp /h/extrascriptcom/htaccess-dev ${development.ssh.to_dir}/.htaccess &amp;&amp; mkdir -p ${development.ssh.to_dir}/library &amp;&amp; ln -s /h/extrascriptcom/ZendFramework-1.11.11/library/Zend ${development.ssh.to_dir}/library"/>
+				<echo message="SCP application files to ${ssh.path.temp}"/>
+				<scp host="${ssh.host}" port="${ssh.port}" username="${ssh.username}" password="${ssh.password}" todir="${ssh.path.temp}">
+					<fileset refid="src.deploy" />
+				</scp>
 
-		<echo message="DbDeploy"/>
-		<dbdeploy url="mysql:host=${db.host};dbname=${development.db.name}" userid="${db.username}" password="${db.password}" dir="db/deltas" outputfile="artefacts/deploy.sql" undooutputfile="artefacts/undo.sql"/>
-		<pdosqlexec url="mysql:host=${db.host};dbname=${development.db.name}" userid="${db.username}" password="${db.password}" src="artefacts/deploy.sql"/>
+				<echo message="rm -rf ${ssh.path.stable} &amp;&amp; mv ${ssh.path.to} ${ssh.path.stable} &amp;&amp; mv ${ssh.path.temp} ${ssh.path.to} &amp;&amp;  mkdir -p ${ssh.path.to}/library &amp;&amp; ln -s ${ssh.path.zf} ${ssh.path.to}/library"/>
+				<ssh host="${ssh.host}" port="${ssh.port}" username="${ssh.username}" password="${ssh.password}"
+				     command="rm -rf ${ssh.path.stable} &amp;&amp; mv ${ssh.path.to} ${ssh.path.stable} &amp;&amp; mv ${ssh.path.temp} ${ssh.path.to} &amp;&amp; mkdir -p ${ssh.path.to}/library &amp;&amp; ln -s ${ssh.path.zf} ${ssh.path.to}/library"/>
 
+				<!--<echo message="DbDeploy"/>-->
+				<!--<dbdeploy url="mysql:host=${db.host};dbname=${db.name}" userid="${db.username}" password="${db.password}" dir="db/deltas" outputfile="artefacts/deploy.sql" undooutputfile="artefacts/undo.sql"/>-->
+				<!--<pdosqlexec url="mysql:host=${db.host};dbname=${db.name}" userid="${db.username}" password="${db.password}" src="artefacts/deploy.sql"/>-->
+			</else>
+		</if>
+
+	</target>
+
+	<target name="include-zf" description="Creating symlink to Zend Framework">
+		<mkdir dir="${dir.deploy}/library"/>
+		<symlink target="${zend.path}" link="${dir.deploy}/library/Zend"/>
 	</target>
 
 </project>
