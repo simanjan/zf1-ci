@@ -220,8 +220,7 @@
 		<tstamp>
 			<format property="check.date.time" pattern="%Y%m%d-%H%M%S" locale="en_US"/>
 		</tstamp>
-		<!--<phploc reportType="csv" reportName="${check.date.time}-report" reportDirectory="artefacts/reports/phploc" countTests="true">-->
-		<phploc reportType="cli" reportName="phploc" reportDirectory="artefacts/reports" countTests="true">
+		<phploc reportType="csv" reportName="phploc.csv" reportDirectory="artefacts/reports" countTests="true">
 			<fileset refid="src.php.application" />
 		</phploc>
 	</target>
@@ -296,6 +295,9 @@
 				<copy todir="${dir.deploy}">
 					<fileset refid="src.deploy"/>
 				</copy>
+				<echo message="Creating symlink to Zend Framework"/>
+				<mkdir dir="${dir.deploy}/library"/>
+				<symlink target="${zend.path}" link="${dir.deploy}/library/Zend"/>
 			</then>
 
 			<else>
@@ -312,17 +314,12 @@
 				<ssh host="${ssh.host}" port="${ssh.port}" username="${ssh.username}" password="${ssh.password}"
 				     command="rm -rf ${ssh.path.stable} &amp;&amp; mv ${ssh.path.to} ${ssh.path.stable} &amp;&amp; mv ${ssh.path.temp} ${ssh.path.to} &amp;&amp; mkdir -p ${ssh.path.to}/library &amp;&amp; ln -s ${ssh.path.zf} ${ssh.path.to}/library"/>
 
-				<!--<echo message="DbDeploy"/>-->
-				<!--<dbdeploy url="mysql:host=${db.host};dbname=${db.name}" userid="${db.username}" password="${db.password}" dir="db/deltas" outputfile="artefacts/deploy.sql" undooutputfile="artefacts/undo.sql"/>-->
-				<!--<pdosqlexec url="mysql:host=${db.host};dbname=${db.name}" userid="${db.username}" password="${db.password}" src="artefacts/deploy.sql"/>-->
+				<echo message="DbDeploy"/>
+				<dbdeploy url="mysql:host=${db.host};dbname=${db.name}" userid="${db.username}" password="${db.password}" dir="db/deltas" outputfile="artefacts/deploy.sql" undooutputfile="artefacts/undo.sql"/>
+				<pdosqlexec url="mysql:host=${db.host};dbname=${db.name}" userid="${db.username}" password="${db.password}" src="artefacts/deploy.sql"/>
 			</else>
 		</if>
 
-	</target>
-
-	<target name="include-zf" description="Creating symlink to Zend Framework">
-		<mkdir dir="${dir.deploy}/library"/>
-		<symlink target="${zend.path}" link="${dir.deploy}/library/Zend"/>
 	</target>
 
 </project>
