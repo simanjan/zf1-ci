@@ -129,7 +129,7 @@
 				<exclude name="artefacts/cache/**/*"/>
 			</fileset>
 		</delete>
-		<delete>
+		<delete quiet="true">
 			<fileset dir="${dir.deploy}">
 				<include name="**/*"/>
 			</fileset>
