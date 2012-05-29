@@ -127,6 +127,7 @@
 			<fileset dir=".">
 				<include name="artefacts/**/*"/>
 				<exclude name="artefacts/cache/**/*"/>
+				<exclude name="artefacts/reports/phploc.csv"/>
 			</fileset>
 		</delete>
 		<delete quiet="true">
