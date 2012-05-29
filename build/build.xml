@@ -220,7 +220,7 @@
 		<tstamp>
 			<format property="check.date.time" pattern="%Y%m%d-%H%M%S" locale="en_US"/>
 		</tstamp>
-		<phploc reportType="csv" reportName="phploc.csv" reportDirectory="artefacts/reports" countTests="true">
+		<phploc reportType="csv" reportName="phploc" reportDirectory="artefacts/reports" countTests="true">
 			<fileset refid="src.php.application" />
 		</phploc>
 	</target>
