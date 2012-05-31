@@ -27,7 +27,7 @@
 		- creating empty directories
 		- including Zend Framework
 	-->
-	<target name="prepare" depends="show-env-properties,setup-filesets,clean,make-dirs" description="Preparing workspace for build" />
+	<target name="prepare" depends="show-env-properties,setup-filesets,clean,make-dirs,include-zf" description="Preparing workspace for build" />
 
 	<target name="show-env-properties">
 		<echo message="System architecture: ${host.arch}" />
@@ -144,6 +144,12 @@
 		<mkdir dir="artefacts/deploy"/>
 		<mkdir dir="artefacts/coverage"/>
 		<mkdir dir="artefacts/reports"/>
+	</target>
+
+	<target name="include-zf" description="Including Zend Famework">
+		<echo message="Including Zend Framework"/>
+		<mkdir dir="library"/>
+		<symlink target="${zend.path}" link="library/Zend"/>
 	</target>
 
 	<!--
