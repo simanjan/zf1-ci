@@ -15,55 +15,41 @@ class IndexController extends Zend_Controller_Action
 
 	public function originalTestCode()
 	{
-		$a = 'String';
-		$b = 'String';
-		if (strpos($a, 'Str') !== false)
-		{
-			if (strpos($b, 'Str') !== false)
-			{
-				$this->init();
-			}
-			else
-			{
-				$std = new stdClass();
-				return $std;
-			}
-		}
+		$champions = array(
+			 'chelsea' => 'champions league',
+			 'juventus' => 'italy',
+			 'real' => 'spain',
+			 'manchester-city' => 'england',
+			 'zenit' => 'russia',
+		);
+		return $champions;
 	}
 
 	public function copyPastingTestCode()
 	{
-		$a = 'String';
-		$b = 'String';
-		if (strpos($a, 'Str') !== false)
-		{
-			if (strpos($b, 'Str') !== false)
-			{
-				$this->init();
-			}
-			else
-			{
-				$std = new stdClass();
-				return $std;
-			}
-		}
+		$champions = array(
+			'chelsea' => 'champions league',
+			'juventus' => 'italy',
+			'real' => 'spain',
+			'manchester-city' => 'england',
+			'zenit' => 'russia',
+		);
+		return $champions;
 	}
 
 	public function messyCode()
 	{
 		$a = 'String';
 
-		if (strpos($a, 'Str') !== false)
-		{
-			if (strpos($a, 'Str') !== false)
-			{
-				foreach ($a as $char)
-				{
-					if ($char == 'X')
-					{
-						if (date('Y') != 2020)
-						{
-							$this->init();
+		if (strpos($a, 'Str') !== false) {
+			if (strpos($a, 'Str') !== true) {
+				foreach ($a as $char) {
+					if ($char == 'X') {
+						if (date('Y') != 2020) {
+							for ($i = 2000; $i < date('Y'); $i--) {
+								$this->init();
+							}
+
 							print 'Messy Code';
 						}
 					}
