@@ -54,7 +54,7 @@
 			<include name="public/**/*"/>
 			<include name="tests/**/*"/>
 			<exclude name="library/Phing/**/*"/>
-			<exclude name="library/Zend/**/*"/>
+			<!--<exclude name="library/Zend/**/*"/>-->
 		</patternset>
 
 		<patternset id="php-application">
@@ -63,7 +63,7 @@
 			<include name="library/**/*.php"/>
 			<include name="public/**/*.php"/>
 			<exclude name="library/Phing/**/*"/>
-			<exclude name="library/Zend/**/*"/>
+			<!--<exclude name="library/Zend/**/*"/>-->
 		</patternset>
 
 		<patternset id="php-tests">
@@ -243,7 +243,7 @@
 
 	<target name="php-cpd" description="Detecting copy/pasted code">
 		<phpcpd minLines="3" minTokens="40">
-			<fileset refid="src.php.application" />
+			<fileset refid="src.php.all" />
 			<formatter type="pmd" outfile="artefacts/reports/pmd-cpd.xml"/>
 		</phpcpd>
 	</target>
