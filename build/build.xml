@@ -146,7 +146,7 @@
 		<mkdir dir="artefacts/reports"/>
 	</target>
 
-	<target name="include-zf" description="Including Zend Famework">
+	<target name="include-zf" description="Including Zend Framework">
 		<echo message="Including Zend Framework"/>
 		<mkdir dir="library"/>
 		<symlink target="${zend.path}" link="library/Zend"/>
