@@ -242,7 +242,7 @@
 	</target>
 
 	<target name="php-cpd" description="Detecting copy/pasted code">
-		<phpcpd minLines="3" minTokens="40">
+		<phpcpd minLines="2" minTokens="2">
 			<fileset refid="src.php.all" />
 			<formatter type="pmd" outfile="artefacts/reports/pmd-cpd.xml"/>
 		</phpcpd>
