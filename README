@@ -1,0 +1,118 @@
+PHP Extensions required:
+===============
+libxml
+ssh2
+tokenizer
+xdebug
+xml
+xsl
+zlib
+
+
+PEAR Registered Channels:
+=========================
+Channel                  Alias   Summary
+components.ez.no         ezc     eZ Enterprise components
+doc.php.net              phpdocs PHP Documentation Team
+pear.pdepend.org         pdepend PHP Depend PEAR channel
+pear.phing.info          phing   Phing PEAR channel
+pear.php.net             pear    PHP Extension and Application Repository
+pear.phpmd.org           phpmd   PHP Mess Detector PEAR channel
+pear.phpunit.de          phpunit PHPUnit PEAR Channel
+pear.symfony-project.com symfony The symfony project PEAR channel
+pecl.php.net             pecl    PHP Extension Community Library
+
+
+PEAR Install Log:
+=================
+pear config-set auto_discover 1
+pear channel-discover pear.phing.info
+pear channel-discover pear.pdepend.org
+pear channel-discover pear.phpmd.org
+
+pear install pear.phpunit.de/PHPUnit
+pear install pear.phpunit.de/PHP_CodeCoverage
+pear install PHP_CodeSniffer
+pear install --alldeps phing/phing
+pear install pdepend/PHP_Depend-beta
+pear install --alldeps phpmd/PHP_PMD
+
+
+Jenkins Plugins:
+================
+- Green Balls
+- Jenkins Clover PHP plugin
+- Static Code Analysis Plug-ins
+- DRY Plugin
+- Jenkins instant-messaging plugin
+- Jenkins Sounds plugin
+- Twitter plugin
+- Checkstyle Plugin
+- Plot plugin
+- Hudson Speaks! Plugin
+- Jenkins Violations plugin
+- HTML5 Notifier Plugin
+- PMD Plugin
+- Jenkins JDepend Plugin
+- Clover Plugin
+- HTML Publisher plugin
+- xUnit Plugin
+- Jenkins Jabber notifier plugin
+- HTML Audio Notifier
+- Jenkins Phing plugin
+- Email-ext plugin
+
+
+Job settings:
+==================
+Git
+* Repository URL = https://github.com/simanjan/zf1-ci.git
+
+Build
+* Invoke Phing targets
+** Phing version (default)
+** (Advanced) Phing Build File = build/build.xml
+** (Advanced) env=dev
+
+Publish Checkstyle analysis results
+* Checkstyle results = artefacts/reports/checkstyle.xml
+
+Publish PMD analysis results
+* PMD results = artefacts/reports/pmd.xml
+
+Publish duplicate code analysis results
+* Duplicate code results = artefacts/reports/pmd-cpd.xml
+* High priority threshold = 10
+* Normal priority threshold = 3
+
+Plot build data
+* Plot group = Code Analysis
+* Data series file = artefacts/reports/phploc.csv
+* Load data from csv file
+* Include columns by index
+* CSV Exclusion values = 0,1,2,17
+* Display original csv above plot
+
+Publish Clover PHP Coverage Report
+* Clover XML Location = artefacts/reports/clover.xml
+
+Publish HTML Report
+* Clover HTML report directory: artefacts/coverage
+
+Publish xUnit test result report
+* PHPUnit-3.4 (default)
+** Pattern = artefacts/reports/junit.xml
+
+Report JDepend
+* artefacts/reports/jdepend.xml
+
+Report Violations
+* checkstyle = 5/50/999 artefacts/reports/checkstyle.xml
+* cpd = 5; 50; 999; artefacts/reports/pmd-cpd.xml
+* pmd = 5; 50; 999; artefacts/reports/pmd.xml
+
+Editable Email Notification
+* Project Recipient List = $DEFAULT_RECIPIENTS, aliaksandr_simanovich@epam.com
+
+Jabber Notification
+* simanjan@jabber.org
