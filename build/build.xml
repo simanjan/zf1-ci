@@ -335,6 +335,8 @@
 
 				<gittag repository="." name="stable" force="true"/>
 
+				<gittag repository="." list="true" pattern="marked" />
+
 			</else>
 		</if>
 
