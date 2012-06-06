@@ -164,7 +164,9 @@
 		- running automated tests
 		- creating code coverage report
 	-->
-	<target name="testing" description="Running automated tests" depends="prepare,coverage-setup,phpunit,coverage-report" />
+	<target name="testing" description="Running automated tests" depends="prepare,coverage-setup,phpunit,coverage-report">
+		<fail if="errr" message="Unit tests failed" />
+	</target>
 
 	<target name="coverage-setup" description="Preparing database for gathering code coverage information for unit tests">
 		<!-- The CoverageSetupTask . -->
@@ -174,7 +176,7 @@
 	</target>
 
 	<target name="phpunit" description="Running unit tests with PHPUnit">
-		<phpunit bootstrap="tests/bootstrap.php" codecoverage="true" printsummary="true">
+		<phpunit bootstrap="tests/bootstrap.php" codecoverage="true" printsummary="true" failureproperty="errr">
 			<formatter type="xml" todir="artefacts/reports" outfile="junit.xml"/>
 			<formatter type="clover" todir="artefacts/reports" outfile="clover.xml"/>
 			<batchtest>
