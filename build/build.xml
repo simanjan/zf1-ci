@@ -336,7 +336,7 @@
 			</else>
 		</if>
 
-		<gittag repository="git://github.com/simanjan/zf1-ci.git" name="stable" force="true"/>
+		<gittag repository="." name="stable" force="true"/>
 
 	</target>
 
