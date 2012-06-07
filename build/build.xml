@@ -281,13 +281,10 @@
 
 	<target name="api" description="Run phpDocumentor 2, API documentation tool">
 		<mkdir dir="artefacts/api"/>
-		<!--<touch file="artefacts/api/index.html" />-->
-		<phpdoc2 title="API Documentation" destdir="artefacts/api" template="responsive">
+		<touch file="artefacts/api/index.html" />
+		<!--<phpdoc2 title="API Documentation" destdir="artefacts/api" template="responsive">-->
 			<!--<fileset refid="src.php.application" />-->
-			<!--<fileset dir=".">-->
-				<!--<include name="application/**/*.php"/>-->
-			<!--</fileset>-->
-		</phpdoc2>
+		<!--</phpdoc2>-->
 	</target>
 
 	<target name="code-browser" description="Aggregate tool output with PHP_CodeBrowser">
