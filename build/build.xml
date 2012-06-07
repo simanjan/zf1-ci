@@ -145,7 +145,6 @@
 
 	<target name="make-dirs" description="Creating directories for artefacts">
 		<mkdir dir="artefacts"/>
-		<mkdir dir="artefacts/api"/>
 		<mkdir dir="artefacts/cache"/>
 		<mkdir dir="artefacts/deploy"/>
 		<mkdir dir="artefacts/coverage"/>
@@ -283,12 +282,9 @@
 	<target name="api" description="Run phpDocumentor 2, API documentation tool">
 		<mkdir dir="artefacts/api"/>
 		<touch file="artefacts/api/index.html" />
-		<!--<phpdoc2 title="API Documentation" destdir="artefacts/api" template="responsive">-->
-			<!--<fileset dir=".">-->
-				<!--<include name="application/**/*.php"/>-->
-				<!--<include name="public/**/*.php"/>-->
-			<!--</fileset>-->
-		<!--</phpdoc2>-->
+		<phpdoc2 title="API Documentation" destdir="artefacts/api" template="responsive">
+			<fileset refid="src.php.application" />
+		</phpdoc2>
 	</target>
 
 	<target name="code-browser" description="Aggregate tool output with PHP_CodeBrowser">
