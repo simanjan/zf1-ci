@@ -283,7 +283,10 @@
 		<mkdir dir="artefacts/api"/>
 		<touch file="artefacts/api/index.html" />
 		<phpdoc2 title="API Documentation" destdir="artefacts/api" template="responsive">
-			<fileset refid="src.php.application" />
+			<!--<fileset refid="src.php.application" />-->
+			<fileset dir=".">
+				<include name="application/**/*.php"/>
+			</fileset>
 		</phpdoc2>
 	</target>
 
